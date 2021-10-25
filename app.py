@@ -2,26 +2,28 @@
 # =================================================================={Imports}================================================================= #
 # ============================================================================================================================================ #
 from flask import Flask
-#from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
+
 app = Flask(__name__)
 
 # ============================================================================================================================================ #
 # ==================================================================={Config}================================================================= #
 # ============================================================================================================================================ #
 
-"""
+
 password = 'supernova7034'
 app.debug = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://ScoutingUser:'+ password + '@wlhsfrc.com/LionLearnDB'
-"""
-#db = SQLAlchemy(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://ScoutingUser:' + password + '@wlhsfrc.com/LionLearnDB'
+
 loadGame = True
+db = SQLAlchemy(app)
+
 
 # ============================================================================================================================================ #
 # ============================================================={Database classes}============================================================= #
 # ============================================================================================================================================ #
 
-"""
+
 class Teams(db.Model):
     __tablename__ = 'teamData'
     id = db.Column(db.Integer, primary_key=True)
@@ -98,67 +100,75 @@ class Games(db.Model):
 
     if loadGame:
 ###START_OF_AUTOGAMESCLASS###
-      R1IntLineExt = db.Column(db.Integer)
-      R2IntLineExt = db.Column(db.Integer)
-      R3IntLineExt = db.Column(db.Integer)
-      B1IntLineExt = db.Column(db.Integer)
-      B2IntLineExt = db.Column(db.Integer)
-      B3IntLineExt = db.Column(db.Integer)
+        R1IntLineExt = db.Column(db.Integer)
+        R2IntLineExt = db.Column(db.Integer)
+        R3IntLineExt = db.Column(db.Integer)
+        B1IntLineExt = db.Column(db.Integer)
+        B2IntLineExt = db.Column(db.Integer)
+        B3IntLineExt = db.Column(db.Integer)
 
-      R1Auto = db.Column(db.Integer)
-      R2Auto = db.Column(db.Integer)
-      R3Auto = db.Column(db.Integer)
-      B1Auto = db.Column(db.Integer)
-      B2Auto = db.Column(db.Integer)
-      B3Auto = db.Column(db.Integer)
+        R1Auto = db.Column(db.Integer)
+        R2Auto = db.Column(db.Integer)
+        R3Auto = db.Column(db.Integer)
+        B1Auto = db.Column(db.Integer)
+        B2Auto = db.Column(db.Integer)
+        B3Auto = db.Column(db.Integer)
 
-      R1TeloPowerPoints = db.Column(db.Integer)
-      R2TeloPowerPoints = db.Column(db.Integer)
-      R3TeloPowerPoints = db.Column(db.Integer)
-      B1TeloPowerPoints = db.Column(db.Integer)
-      B2TeloPowerPoints = db.Column(db.Integer)
-      B3TeloPowerPoints = db.Column(db.Integer)
+        R1TeloPowerPoints = db.Column(db.Integer)
+        R2TeloPowerPoints = db.Column(db.Integer)
+        R3TeloPowerPoints = db.Column(db.Integer)
+        B1TeloPowerPoints = db.Column(db.Integer)
+        B2TeloPowerPoints = db.Column(db.Integer)
+        B3TeloPowerPoints = db.Column(db.Integer)
 
-      R1CPP = db.Column(db.Integer)
-      R2CPP = db.Column(db.Integer)
-      R3CPP = db.Column(db.Integer)
-      B1CPP = db.Column(db.Integer)
-      B2CPP = db.Column(db.Integer)
-      B3CPP = db.Column(db.Integer)
+        R1CPP = db.Column(db.Integer)
+        R2CPP = db.Column(db.Integer)
+        R3CPP = db.Column(db.Integer)
+        B1CPP = db.Column(db.Integer)
+        B2CPP = db.Column(db.Integer)
+        B3CPP = db.Column(db.Integer)
 
-      R1EndGame = db.Column(db.Integer)
-      R2EndGame = db.Column(db.Integer)
-      R3EndGame = db.Column(db.Integer)
-      B1EndGame = db.Column(db.Integer)
-      B2EndGame = db.Column(db.Integer)
-      B3EndGame = db.Column(db.Integer)
+        R1EndGame = db.Column(db.Integer)
+        R2EndGame = db.Column(db.Integer)
+        R3EndGame = db.Column(db.Integer)
+        B1EndGame = db.Column(db.Integer)
+        B2EndGame = db.Column(db.Integer)
+        B3EndGame = db.Column(db.Integer)
 
-      R1ShieldSwitch = db.Column(db.Integer)
-      R2ShieldSwitch = db.Column(db.Integer)
-      R3ShieldSwitch = db.Column(db.Integer)
-      B1ShieldSwitch = db.Column(db.Integer)
-      B2ShieldSwitch = db.Column(db.Integer)
-      B3ShieldSwitch = db.Column(db.Integer)
+        R1ShieldSwitch = db.Column(db.Integer)
+        R2ShieldSwitch = db.Column(db.Integer)
+        R3ShieldSwitch = db.Column(db.Integer)
+        B1ShieldSwitch = db.Column(db.Integer)
+        B2ShieldSwitch = db.Column(db.Integer)
+        B3ShieldSwitch = db.Column(db.Integer)
 
-      R1Adjustments = db.Column(db.Integer)
-      R2Adjustments = db.Column(db.Integer)
-      R3Adjustments = db.Column(db.Integer)
-      B1Adjustments = db.Column(db.Integer)
-      B2Adjustments = db.Column(db.Integer)
-      B3Adjustments = db.Column(db.Integer)
+        R1Adjustments = db.Column(db.Integer)
+        R2Adjustments = db.Column(db.Integer)
+        R3Adjustments = db.Column(db.Integer)
+        B1Adjustments = db.Column(db.Integer)
+        B2Adjustments = db.Column(db.Integer)
+        B3Adjustments = db.Column(db.Integer)
 
-      R1Total = db.Column(db.Integer)
-      R2Total = db.Column(db.Integer)
-      R3Total = db.Column(db.Integer)
-      B1Total = db.Column(db.Integer)
-      B2Total = db.Column(db.Integer)
-      B3Total = db.Column(db.Integer)
-    ###END_OF_AUTOGAMESCLASS###
+        R1Total = db.Column(db.Integer)
+        R2Total = db.Column(db.Integer)
+        R3Total = db.Column(db.Integer)
+        B1Total = db.Column(db.Integer)
+        B2Total = db.Column(db.Integer)
+        B3Total = db.Column(db.Integer)
+
+###END_OF_AUTOGAMESCLASS###
 
     #   2020 data
-    def __init__(self, Gid, eventID, blueScore, B1robotID, B2robotID, B3robotID, redScore, R1robotID, R2robotID,R3robotID
+    def __init__(self, Gid, eventID, blueScore, B1robotID, B2robotID, B3robotID, redScore, R1robotID, R2robotID,
+                 R3robotID
 ###START_OF_AUTOGAMESINIT###
-, R1IntLineExt, R2IntLineExt, R3IntLineExt, B1IntLineExt, B2IntLineExt, B3IntLineExt, R1Auto, R2Auto, R3Auto, B1Auto, B2Auto, B3Auto, R1TeloPowerPoints, R2TeloPowerPoints, R3TeloPowerPoints, B1TeloPowerPoints, B2TeloPowerPoints, B3TeloPowerPoints, R1CPP, R2CPP, R3CPP, B1CPP, B2CPP, B3CPP, R1EndGame, R2EndGame, R3EndGame, B1EndGame, B2EndGame, B3EndGame, R1ShieldSwitch, R2ShieldSwitch, R3ShieldSwitch, B1ShieldSwitch, B2ShieldSwitch, B3ShieldSwitch, R1Adjustments, R2Adjustments, R3Adjustments, B1Adjustments, B2Adjustments, B3Adjustments, R1Total, R2Total, R3Total, B1Total, B2Total, B3Total
+                 , R1IntLineExt, R2IntLineExt, R3IntLineExt, B1IntLineExt, B2IntLineExt, B3IntLineExt, R1Auto, R2Auto,
+                 R3Auto, B1Auto, B2Auto, B3Auto, R1TeloPowerPoints, R2TeloPowerPoints, R3TeloPowerPoints,
+                 B1TeloPowerPoints, B2TeloPowerPoints, B3TeloPowerPoints, R1CPP, R2CPP, R3CPP, B1CPP, B2CPP, B3CPP,
+                 R1EndGame, R2EndGame, R3EndGame, B1EndGame, B2EndGame, B3EndGame, R1ShieldSwitch, R2ShieldSwitch,
+                 R3ShieldSwitch, B1ShieldSwitch, B2ShieldSwitch, B3ShieldSwitch, R1Adjustments, R2Adjustments,
+                 R3Adjustments, B1Adjustments, B2Adjustments, B3Adjustments, R1Total, R2Total, R3Total, B1Total,
+                 B2Total, B3Total
 ###END_OF_AUTOGAMESINIT###
                  ):
         if Gid != 0:
@@ -231,19 +241,18 @@ class Games(db.Model):
             self.B1Total = B1Total
             self.B2Total = B2Total
             self.B3Total = B3Total
+
 ###END_OF_AUTOGAMESPROP###
-"""
+
 
 @app.route('/')
 def main():
     return '1 Connected'
 
+
 @app.route('/scouting')
 def altmain():
     return '1 Connected'
-
-
-
 
 
 if __name__ == '__main__':
