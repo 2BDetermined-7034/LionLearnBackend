@@ -62,19 +62,23 @@ class Events(db.Model):
 class Robots(db.Model):
     __tablename__ = "robotData"
     id = db.Column(db.Integer, primary_key=True)
-    team = db.Column(db.Integer)
-    event = db.Column(db.String(200))
+    teamID = db.Column(db.Integer)
+    seasonID = db.Column(db.Integer)
+    eventID = db.Column(db.Integer)
+
     wheels = db.Column(db.String(200))
     motor = db.Column(db.String(200))
     powerTrans = db.Column(db.String(200))
     driveTrain = db.Column(db.String(200))
     ODR = db.Column(db.Integer)
 
-    def __init__(self, Rid, team, event, wheels, motor, powerTrans, driveTrain, ODR):
+    def __init__(self, Rid, team,season, event, wheels, motor, powerTrans, driveTrain, ODR):
         if Rid != 0:
             self.id = Rid  # If the event has an ID already (IE editing an event) then it'll re-use it
-        self.team = team
-        self.event = event
+        self.teamID = team
+        self.seasonID = season
+        self.eventID = event
+
         self.wheels = wheels
         self.motor = motor
         self.powerTrans = powerTrans
@@ -262,12 +266,35 @@ def altmain():
     return '1 Connected'
 
 
-@app.route('/inputTeam')
+@app.route('/api/inputTeam', methods=["'POST"])
 def inputTeam():
+    parameters = request.args
+
+    name = parameters.get('name')
+    number = parameters.get('number')
+    location = parameters.get('location')
+    logo = parameters.get('logo')
+
+    # If you are editing, pass the ID of the object, else -1
+    editID = parameters.get("editID") or -1
+
+    if editID > -1 and editID != number:
+        return '0 edit ID must be equal to your team number'
+    # Submit team
+    elif number != 0:
+        if db.session.query(Teams).filter(Teams.id == number).count() > 0:
+            return '0 Team already exists, please add an editID field'
+        data = Teams(name, number, location, logo)
+        db.session.add(data)
+        db.session.commit()
+        return '1 team entered'
+
+
+
     return '1 '
 
 
-@app.route('/returnTeam')
+@app.route('/api/returnTeam')
 def returnTeam():
     return '1'
 
