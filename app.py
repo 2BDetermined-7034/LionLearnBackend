@@ -1,8 +1,7 @@
 # ============================================================================================================================================ #
 # =================================================================={Imports}================================================================= #
 # ============================================================================================================================================ #
-import json
-from flask import Flask, render_template, request
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 
@@ -157,11 +156,10 @@ class Games(db.Model):
     ###END_OF_AUTOGAMESCLASS###
 
     #   2020 data
-    def __init__(self, Gid, eventID, blueScore, B1robotID, B2robotID, B3robotID, redScore, R1robotID, R2robotID,
-                 R3robotID
+    def __init__(self, Gid, eventID, blueScore, B1robotID, B2robotID, B3robotID, redScore, R1robotID, R2robotID,R3robotID
 ###START_OF_AUTOGAMESINIT###
 , R1IntLineExt, R2IntLineExt, R3IntLineExt, B1IntLineExt, B2IntLineExt, B3IntLineExt, R1Auto, R2Auto, R3Auto, B1Auto, B2Auto, B3Auto, R1TeloPowerPoints, R2TeloPowerPoints, R3TeloPowerPoints, B1TeloPowerPoints, B2TeloPowerPoints, B3TeloPowerPoints, R1CPP, R2CPP, R3CPP, B1CPP, B2CPP, B3CPP, R1EndGame, R2EndGame, R3EndGame, B1EndGame, B2EndGame, B3EndGame, R1ShieldSwitch, R2ShieldSwitch, R3ShieldSwitch, B1ShieldSwitch, B2ShieldSwitch, B3ShieldSwitch, R1Adjustments, R2Adjustments, R3Adjustments, B1Adjustments, B2Adjustments, B3Adjustments, R1Total, R2Total, R3Total, B1Total, B2Total, B3Total
-                 ###END_OF_AUTOGAMESINIT###
+###END_OF_AUTOGAMESINIT###
                  ):
         if Gid != 0:
             self.id = Gid
