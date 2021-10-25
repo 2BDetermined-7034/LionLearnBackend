@@ -14,6 +14,8 @@ app.debug = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://ScoutingUser:'+ password + '@wlhsfrc.com/LionLearnDB'
 #   if you don't do this, the sqlalchemy gods get mad and give you errors
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+
 db = SQLAlchemy(app)
 loadGame = True
 
@@ -27,7 +29,7 @@ class Teams(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     teamName = db.Column(db.String(200))
     teamNumber = db.Column(db.Integer)
-    location = db.Column(db.String(200))
+    teamlocation = db.Column(db.String(200))
     teamLogo = db.Column(db.LargeBinary)
 
     def __init__(self, teamName, teamNumber, location, teamLogo):
@@ -38,7 +40,7 @@ class Teams(db.Model):
         self.id = teamNumber
         self.teamName = teamName
         self.teamNumber = teamNumber
-        self.location = location
+        self.teamlocation = location
         self.teamLogo = teamLogo
 
 
@@ -61,7 +63,7 @@ class Robots(db.Model):
     __tablename__ = "robotData"
     id = db.Column(db.Integer, primary_key=True)
     team = db.Column(db.Integer)
-    event = db.Column(db.String)
+    event = db.Column(db.String(200))
     wheels = db.Column(db.String(200))
     motor = db.Column(db.String(200))
     powerTrans = db.Column(db.String(200))
