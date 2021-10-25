@@ -12,7 +12,8 @@ db = SQLAlchemy(app)
 # ==================================================================={Config}================================================================= #
 # ============================================================================================================================================ #
 
-
+app.debug = True
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 password = 'supernova7034'
 app.debug = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://ScoutingUser:' + password + '@wlhsfrc.com/LionLearnDB'
@@ -254,10 +255,12 @@ class Games(db.Model):
 # ============================================================================================================================================ #
 # ================================================================={routing}================================================================== #
 # ============================================================================================================================================ #
-
-
 @app.route('/')
 def main():
+    return '1 Connected'
+
+@app.route('/',subdomain="scouting")
+def submain():
     return '1 Connected'
 
 
@@ -265,8 +268,15 @@ def main():
 def altmain():
     return '1 Connected'
 
+@app.route('/testscout',subdomain="scouting")
+def testscout():
+    return 'eeeee'
 
-@app.route('/api/inputTeam', methods=["POST"])
+@app.route("/testscout/api")
+def e():
+    return 'eee'
+
+@app.route('/scouting/api/inputTeam', methods=["POST"])
 def inputTeam():
     parameters = request.args
 
