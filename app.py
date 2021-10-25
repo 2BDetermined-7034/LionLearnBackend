@@ -266,32 +266,30 @@ def altmain():
     return '1 Connected'
 
 
-@app.route('/api/inputTeam', methods=["'POST"])
+@app.route('/api/inputTeam', methods=["POST"])
 def inputTeam():
     parameters = request.args
 
     name = parameters.get('name')
-    number = parameters.get('number')
+    number = int(parameters.get('number') or -1)
     location = parameters.get('location')
-    logo = parameters.get('logo')
+    logo = str.encode(parameters.get('logo'))
 
     # If you are editing, pass the ID of the object, else -1
-    editID = parameters.get("editID") or -1
+    editID = int(parameters.get("editID") or -1)
 
     if editID > -1 and editID != number:
         return '0 edit ID must be equal to your team number'
     # Submit team
-    elif number != 0:
+    elif number > 0:
         if db.session.query(Teams).filter(Teams.id == number).count() > 0:
-            return '0 Team already exists, please add an editID field'
+            return '0 Team already exists, please add an editID param'
         data = Teams(name, number, location, logo)
         db.session.add(data)
         db.session.commit()
         return '1 team entered'
-
-
-
-    return '1 '
+    else:
+        return '0 no valid team ID'
 
 
 @app.route('/api/returnTeam')
