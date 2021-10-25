@@ -1,10 +1,12 @@
 # ============================================================================================================================================ #
 # =================================================================={Imports}================================================================= #
 # ============================================================================================================================================ #
-from flask import Flask
+from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+db = SQLAlchemy(app)
+
 
 # ============================================================================================================================================ #
 # ==================================================================={Config}================================================================= #
@@ -14,9 +16,7 @@ app = Flask(__name__)
 password = 'supernova7034'
 app.debug = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://ScoutingUser:' + password + '@wlhsfrc.com/LionLearnDB'
-
 loadGame = True
-db = SQLAlchemy(app)
 
 
 # ============================================================================================================================================ #
@@ -82,6 +82,7 @@ class Robots(db.Model):
         self.ODR = ODR
 
 
+# noinspection DuplicatedCode
 class Games(db.Model):
     __tablename__ = "gameData"
     id = db.Column(db.Integer, primary_key=True)
@@ -161,7 +162,7 @@ class Games(db.Model):
     #   2020 data
     def __init__(self, Gid, eventID, blueScore, B1robotID, B2robotID, B3robotID, redScore, R1robotID, R2robotID,
                  R3robotID
-###START_OF_AUTOGAMESINIT###
+##START_OF_AUTOGAMESINIT###
                  , R1IntLineExt, R2IntLineExt, R3IntLineExt, B1IntLineExt, B2IntLineExt, B3IntLineExt, R1Auto, R2Auto,
                  R3Auto, B1Auto, B2Auto, B3Auto, R1TeloPowerPoints, R2TeloPowerPoints, R3TeloPowerPoints,
                  B1TeloPowerPoints, B2TeloPowerPoints, B3TeloPowerPoints, R1CPP, R2CPP, R3CPP, B1CPP, B2CPP, B3CPP,
@@ -242,7 +243,13 @@ class Games(db.Model):
             self.B2Total = B2Total
             self.B3Total = B3Total
 
+
 ###END_OF_AUTOGAMESPROP###
+
+
+# ============================================================================================================================================ #
+# ================================================================={routing}================================================================== #
+# ============================================================================================================================================ #
 
 
 @app.route('/')
@@ -253,6 +260,16 @@ def main():
 @app.route('/scouting')
 def altmain():
     return '1 Connected'
+
+
+@app.route('/inputTeam')
+def inputTeam():
+    return '1 '
+
+
+@app.route('/returnTeam')
+def returnTeam():
+    return '1'
 
 
 if __name__ == '__main__':
