@@ -1,0 +1,11 @@
+{
+    "IntLineExt":{"type":"radio", "options":[true, false], "desc":"Intition Line Exited", "valueType":"Boolean", "worth":{"true":25, "false":0}},
+    "Auto":{"type":"number", "desc":"Auto Power Cell Points", "valueType":"Interger"},
+    "TeloPowerPoints":{"type":"number", "desc":"Teleop Power Cell Points", "valueType":"Interger"},
+    "CPP":{"type":"number", "desc":"Control Panel Points", "valueType":"Interger"},
+    "EndGame":{"type":"radio", "options":["park", "hang"], "desc":"End Game", "valueType":"Interger", "worth":{"park":5, "hang":25}},
+    "ShieldSwitch":{"type":"radio", "options":[true, false], "desc":"Shield Generator Switch Level", "valueType":"Boolean", "worth":{"true":15, "false":0}},
+    "Adjustments":{"type":"number", "desc":"Adjustments (negitives are ok, I think)", "valueType":"Interger"},
+    "Total":{"type":"number", "desc":"Total", "valueType":"Interger"}
+
+}
