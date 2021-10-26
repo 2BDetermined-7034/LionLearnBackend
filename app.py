@@ -291,6 +291,7 @@ def inputTeam():
     # If you are editing, pass the ID of the object, else -1
     editID = int(parameters.get("editID") or -1)
 
+
     if editID > -1 and editID != number:
         return '0 edit ID must be equal to your team number'
     # Submit team
