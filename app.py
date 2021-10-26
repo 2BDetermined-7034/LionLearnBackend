@@ -1,6 +1,8 @@
 # ============================================================================================================================================ #
 # =================================================================={Imports}================================================================= #
 # ============================================================================================================================================ #
+import os
+
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 
@@ -18,11 +20,12 @@ password = 'supernova7034'
 app.debug = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://ScoutingUser:' + password + '@wlhsfrc.com/LionLearnDB'
 loadGame = True
-
+if os.environ.get('FLASK_ENV') != 'development':
+    app.config['SERVER_NAME'] = 'wlhsfrc.com'
 
 # ============================================================================================================================================ #
 # ============================================================={Database classes}============================================================= #
-# ============================================================================================================================================ #
+# =============================================app.config['SERVER_NAME'] = website_url=============================================================================================== #
 
 
 class Teams(db.Model):
@@ -255,28 +258,28 @@ class Games(db.Model):
 # ============================================================================================================================================ #
 # ================================================================={routing}================================================================== #
 # ============================================================================================================================================ #
-@app.route('/')
-def main():
-    return '1 Connected'
 
-@app.route('/',subdomain="scouting")
+@app.route('/scouting')
+def altmain():
+    return '0.5 somewhat connected'
+
+
+@app.route('/scouting', subdomain='scouting')
+def altsubmain():
+    return '1 connected via subdomain'
+
+
+@app.route('/', subdomain="scouting")
 def submain():
     return '1 Connected'
 
 
-@app.route('/scouting')
-def altmain():
-    return '1 Connected'
-
-@app.route('/testscout',subdomain="scouting")
+@app.route('/testscout', subdomain="scouting")
 def testscout():
     return 'eeeee'
 
-@app.route("/testscout/api")
-def e():
-    return 'eee'
 
-@app.route('/scouting/api/inputTeam', methods=["POST"])
+@app.route('/inputTeam', subdomain='scouting', methods=["POST"])
 def inputTeam():
     parameters = request.args
 
@@ -302,7 +305,7 @@ def inputTeam():
         return '0 no valid team ID'
 
 
-@app.route('/api/returnTeam')
+@app.route('/returnTeam')
 def returnTeam():
     return '1'
 
