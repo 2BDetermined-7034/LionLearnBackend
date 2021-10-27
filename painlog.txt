@@ -1,0 +1,30 @@
+Dear reader,
+
+You are probably assigned to maintain the scouting system.
+I will do my best to document problems I have had to face and their solutions.
+I expect that you will do the same.
+
+Best of luck,
+
+Sam Felsted
+Software/Scouting lead
+10/26/2021
+
+================================================================================
+=================================={API Errors}==================================
+================================================================================
+
+Error: Web app could not be started
+
+Fix: stop the app, start the app, go into passenger_wsgi.py and delete all the code. then put
+    from app import app as application
+without the tab. Then RESTART the app (not stop and start) and it should work
+
+Error: Invalid response from server after attempting to input data
+
+Fix: make sure the webserver's IP is allowed on the allowed IPs to connect to mySQL
+
+
+================================================================================
+================================{Client Errors}=================================
+================================================================================
