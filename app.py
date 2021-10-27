@@ -5,7 +5,6 @@ import os
 
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import Session
 
 app = Flask(__name__)
 # ============================================================================================================================================ #
@@ -22,6 +21,7 @@ if os.environ.get('FLASK_ENV') != 'development':
     app.config['SERVER_NAME'] = 'wlhsfrc.com'
 
 db = SQLAlchemy(app)
+
 
 # ============================================================================================================================================ #
 # ============================================================={Database classes}============================================================= #
@@ -76,7 +76,7 @@ class Robots(db.Model):
     driveTrain = db.Column(db.String(200))
     ODR = db.Column(db.Integer)
 
-    def __init__(self, Rid, team,season, event, wheels, motor, powerTrans, driveTrain, ODR):
+    def __init__(self, Rid, team, season, event, wheels, motor, powerTrans, driveTrain, ODR):
         if Rid != 0:
             self.id = Rid  # If the event has an ID already (IE editing an event) then it'll re-use it
         self.teamID = team
@@ -108,7 +108,7 @@ class Games(db.Model):
     R3robotID = db.Column(db.Integer)
 
     if loadGame:
-###START_OF_AUTOGAMESCLASS###
+        ###START_OF_AUTOGAMESCLASS###
         R1IntLineExt = db.Column(db.Integer)
         R2IntLineExt = db.Column(db.Integer)
         R3IntLineExt = db.Column(db.Integer)
@@ -165,12 +165,12 @@ class Games(db.Model):
         B2Total = db.Column(db.Integer)
         B3Total = db.Column(db.Integer)
 
-###END_OF_AUTOGAMESCLASS###
+    ###END_OF_AUTOGAMESCLASS###
 
     #   2020 data
     def __init__(self, Gid, eventID, blueScore, B1robotID, B2robotID, B3robotID, redScore, R1robotID, R2robotID,
                  R3robotID
-##START_OF_AUTOGAMESINIT###
+                 ##START_OF_AUTOGAMESINIT###
                  , R1IntLineExt, R2IntLineExt, R3IntLineExt, B1IntLineExt, B2IntLineExt, B3IntLineExt, R1Auto, R2Auto,
                  R3Auto, B1Auto, B2Auto, B3Auto, R1TeloPowerPoints, R2TeloPowerPoints, R3TeloPowerPoints,
                  B1TeloPowerPoints, B2TeloPowerPoints, B3TeloPowerPoints, R1CPP, R2CPP, R3CPP, B1CPP, B2CPP, B3CPP,
@@ -178,7 +178,7 @@ class Games(db.Model):
                  R3ShieldSwitch, B1ShieldSwitch, B2ShieldSwitch, B3ShieldSwitch, R1Adjustments, R2Adjustments,
                  R3Adjustments, B1Adjustments, B2Adjustments, B3Adjustments, R1Total, R2Total, R3Total, B1Total,
                  B2Total, B3Total
-###END_OF_AUTOGAMESINIT###
+                 ###END_OF_AUTOGAMESINIT###
                  ):
         if Gid != 0:
             self.id = Gid
@@ -194,7 +194,7 @@ class Games(db.Model):
         self.R3robotID = R3robotID
 
         if loadGame:
-###START_OF_AUTOGAMESPROP###
+            ###START_OF_AUTOGAMESPROP###
             self.R1IntLineExt = R1IntLineExt
             self.R2IntLineExt = R2IntLineExt
             self.R3IntLineExt = R3IntLineExt
@@ -278,16 +278,26 @@ def submain():
 def inputTeam():
     parameters = request.args
 
-    name = parameters.get('name')
+    name = parameters.get('name') or ''
     number = int(parameters.get('number') or -1)
-    location = parameters.get('location')
-    logo = str.encode(parameters.get('logo'))
+    location = parameters.get('location') or ''
+    logo = str.encode(parameters.get('logo')) or ''
 
     # If you are editing, pass the ID of the object, else -1
     editID = int(parameters.get("editID") or -1)
     if editID > -1 and editID != number:
         return '0 edit ID must be equal to your team number'
-    # Submit team
+    # Edit team
+    elif editID == number:
+        if name != '':
+            db.session.query(Teams).filter(Teams.id == editID).update({'teamName': name})
+        if location != '':
+            db.session.query(Teams).filter(Teams.id == editID).update({'teamLocation': location})
+        if logo != '':
+            db.session.query(Teams).filter(Teams.id == editID).update({'teamLogo': logo})  # Logos are stored in base64
+        db.session.commit()
+        return '1 team updated'
+    # submit team
     elif number > 0:
         if db.session.query(Teams).filter(Teams.id == number).count() > 0:
             return '0 Team already exists, please add an editID param'
@@ -297,6 +307,15 @@ def inputTeam():
         return '1 team entered'
     else:
         return '0 no valid team ID'
+
+
+@app.route('/deleteTeam', subdomain='scouting', methods=["POST"])
+def deleteTeam():
+    teamID = request.args.get('id')
+    item = Teams.query.get(teamID)
+    db.session.delete(item)
+    db.session.commit()
+    return '1 team deleted'
 
 
 @app.route('/returnTeam')
