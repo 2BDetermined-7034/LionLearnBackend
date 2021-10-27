@@ -274,11 +274,6 @@ def submain():
     return '1 Connected'
 
 
-@app.route('/testscout', subdomain="scouting")
-def testscout():
-    return 'eeeee'
-
-
 @app.route('/inputTeam', subdomain='scouting', methods=["POST"])
 def inputTeam():
     parameters = request.args
