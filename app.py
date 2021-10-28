@@ -1,6 +1,7 @@
 # ============================================================================================================================================ #
 # =================================================================={Imports}================================================================= #
 # ============================================================================================================================================ #
+import datetime
 import os
 
 from flask import Flask, request
@@ -55,9 +56,7 @@ class Events(db.Model):
     eventLocation = db.Column(db.String(200))
     eventDate = db.Column(db.Date)
 
-    def __init__(self, Eid, eventName, eventLocation, eventDate):
-        if Eid != 0:
-            self.id = Eid  # If the event has an ID already (IE editing an event) then it'll re-use it
+    def __init__(self, eventName, eventLocation, eventDate):
         self.eventName = eventName
         self.eventLocation = eventLocation
         self.eventDate = eventDate
@@ -281,7 +280,7 @@ def inputTeam():
     name = parameters.get('name') or ''
     number = int(parameters.get('number') or -1)
     location = parameters.get('location') or ''
-    logo = str.encode(parameters.get('logo')) or ''
+    logo = str.encode(parameters.get('logo')) or str.encode('')
 
     # If you are editing, pass the ID of the object, else -1
     editID = int(parameters.get("editID") or -1)
@@ -292,19 +291,19 @@ def inputTeam():
         if name != '':
             db.session.query(Teams).filter(Teams.id == editID).update({'teamName': name})
         if location != '':
-            db.session.query(Teams).filter(Teams.id == editID).update({'teamLocation': location})
+            db.session.query(Teams).filter(Teams.id == editID).update({'teamlocation': location})
         if logo != '':
             db.session.query(Teams).filter(Teams.id == editID).update({'teamLogo': logo})  # Logos are stored in base64
         db.session.commit()
-        return '1 team updated'
+        return '1 Team updated'
     # submit team
-    elif number > 0:
+    if number > 0:
         if db.session.query(Teams).filter(Teams.id == number).count() > 0:
             return '0 Team already exists, please add an editID param'
         data = Teams(name, number, location, logo)
         db.session.add(data)
         db.session.commit()
-        return '1 team entered'
+        return '1 Team entered'
     else:
         return '0 no valid team ID'
 
@@ -313,14 +312,48 @@ def inputTeam():
 def deleteTeam():
     teamID = request.args.get('id')
     item = Teams.query.get(teamID)
-    db.session.delete(item)
-    db.session.commit()
-    return '1 team deleted'
+    if item:
+        db.session.delete(item)
+        db.session.commit()
+        return '1 team deleted'
+    return '0 team not on server'
 
 
-@app.route('/returnTeam')
+@app.route('/searchTeam', subdomain='scouting', methods=['POST'])
 def returnTeam():
-    return '1'
+    teamID = request.args.get('id')
+    item = Teams.query.get(teamID)
+    if item:
+        team = {'id': item.id, 'teamNumber':item.teamNumber,'teamName':item.teamName,'teamlocation':item.teamlocation,'teamLogo':item.teamLogo.decode()}
+        return team
+    return '0 team not on server'
+
+
+@app.route('/inputEvent', methods=['POST'])
+def inputEvent():
+    parameters = request.args
+
+    name = parameters.get('eventName') or ''
+    location = parameters.get('eventLocation') or ''
+    date = parameters.get('eventDate') or datetime.date.today()
+
+    editID = int(parameters.get('editID') or -1)
+
+    if editID > -1:
+        if name != '':
+            db.session.query(Events).filter(Events.id == editID).update({'eventName': name})
+        if location != '':
+            db.session.query(Events).filter(Events.id == editID).update({'eventLocation': location})
+        if date != '':
+            db.session.query(Events).filter(Events.id == editID).update({'eventLocation': date})
+        db.session.commit()
+        return '1 event updated'
+
+    data = Events(name, location,date)
+    db.session.add(data)
+    db.session.commit()
+    return '1 event added'
+
 
 
 if __name__ == '__main__':
