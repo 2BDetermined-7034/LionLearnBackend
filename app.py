@@ -55,7 +55,7 @@ class Events(db.Model):
     eventName = db.Column(db.String(200))
     eventLocation = db.Column(db.String(200))
     eventDate = db.Column(db.Date)
-    eventTeams = db.Column(db.PickleType)
+    eventTeams = db.Column(db.String(20000))
 
     def __init__(self, eventName, eventLocation, eventDate, eventTeams):
         self.eventName = eventName
@@ -338,7 +338,7 @@ def inputEvent():
     name = parameters.get('eventName') or ''
     location = parameters.get('eventLocation') or ''
     date = parameters.get('eventDate') or datetime.date.today()
-    teams = parameters.get('eventTeams') or []
+    teams = parameters.get('eventTeams') or ''
 
     editID = int(parameters.get('editID') or -1)
 
@@ -349,7 +349,7 @@ def inputEvent():
             db.session.query(Events).filter(Events.id == editID).update({'eventLocation': location})
         if date != '':
             db.session.query(Events).filter(Events.id == editID).update({'eventLocation': date})
-        if len(teams) > 1:
+        if teams != '':
             db.session.query(Events).filter(Events.id == editID).update({'eventTeams': teams})
         db.session.commit()
         return '1 event updated'
