@@ -55,11 +55,13 @@ class Events(db.Model):
     eventName = db.Column(db.String(200))
     eventLocation = db.Column(db.String(200))
     eventDate = db.Column(db.Date)
+    eventTeams = db.Column(db.PickleType)
 
-    def __init__(self, eventName, eventLocation, eventDate):
+    def __init__(self, eventName, eventLocation, eventDate, eventTeams):
         self.eventName = eventName
         self.eventLocation = eventLocation
         self.eventDate = eventDate
+        self.eventTeams = eventTeams
 
 
 class Robots(db.Model):
@@ -336,6 +338,7 @@ def inputEvent():
     name = parameters.get('eventName') or ''
     location = parameters.get('eventLocation') or ''
     date = parameters.get('eventDate') or datetime.date.today()
+    teams = parameters.get('eventTeams') or []
 
     editID = int(parameters.get('editID') or -1)
 
@@ -346,14 +349,25 @@ def inputEvent():
             db.session.query(Events).filter(Events.id == editID).update({'eventLocation': location})
         if date != '':
             db.session.query(Events).filter(Events.id == editID).update({'eventLocation': date})
+        if len(teams) > 1:
+            db.session.query(Events).filter(Events.id == editID).update({'eventTeams': teams})
         db.session.commit()
         return '1 event updated'
 
-    data = Events(name, location,date)
+    data = Events(name, location,date, teams)
     db.session.add(data)
     db.session.commit()
     return '1 event added'
 
+
+@app.route('/searchEvent', methods=['POST'])
+def returnEvent():
+    eventID = request.args.get('id')
+    item = Events.query.get(eventID)
+    if item:
+        event = {'id': item.id, 'eventName':item.eventName,'eventLocation':item.eventLocation,'eventDate':item.eventDate,'eventTeams':item.eventTeams}
+        return event
+    return '0 event not on server'
 
 
 if __name__ == '__main__':
