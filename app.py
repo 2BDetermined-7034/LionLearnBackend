@@ -71,24 +71,19 @@ class Robots(db.Model):
     seasonID = db.Column(db.Integer)
     eventID = db.Column(db.Integer)
 
-    wheels = db.Column(db.String(200))
-    motor = db.Column(db.String(200))
-    powerTrans = db.Column(db.String(200))
-    driveTrain = db.Column(db.String(200))
-    ODR = db.Column(db.Integer)
+    driveBase = db.Column(db.String(20))
+    isReliable = db.Column(db.BOOLEAN)
 
-    def __init__(self, Rid, team, season, event, wheels, motor, powerTrans, driveTrain, ODR):
-        if Rid != 0:
-            self.id = Rid  # If the event has an ID already (IE editing an event) then it'll re-use it
+    climbPercent = db.Column(db.FLOAT)
+
+    def __init__(self, team, season, event, drive, reliable, climb):
         self.teamID = team
         self.seasonID = season
         self.eventID = event
 
-        self.wheels = wheels
-        self.motor = motor
-        self.powerTrans = powerTrans
-        self.driveTrain = driveTrain
-        self.ODR = ODR
+        self.driveBase = drive
+        self.isReliable = reliable
+        self.climbPercent = climb
 
 
 # noinspection DuplicatedCode
@@ -279,17 +274,17 @@ def submain():
 def inputTeam():
     parameters = request.args
 
-    name = parameters.get('name') or ''
-    number = int(parameters.get('number') or -1)
-    location = parameters.get('location') or ''
-    logo = str.encode(parameters.get('logo')) or str.encode('')
+    name = parameters.get('teamName') or ''
+    number = int(parameters.get('teamNumber') or -1)
+    location = parameters.get('teamLocation') or ''
+    logo = str.encode(parameters.get('teamLogo')) or str.encode('')
 
     # If you are editing, pass the ID of the object, else -1
     editID = int(parameters.get("editID") or -1)
     if editID > -1 and editID != number:
         return '0 edit ID must be equal to your team number'
     # Edit team
-    elif editID == number:
+    elif editID == number and db.session.query(Teams).filter(Teams.id == number).count() > 0:
         if name != '':
             db.session.query(Teams).filter(Teams.id == editID).update({'teamName': name})
         if location != '':
@@ -321,12 +316,13 @@ def deleteTeam():
     return '0 team not on server'
 
 
-@app.route('/searchTeam', subdomain='scouting', methods=['POST'])
-def returnTeam():
+@app.route('/getTeam', subdomain='scouting', methods=['POST'])
+def getTeam():
     teamID = request.args.get('id')
     item = Teams.query.get(teamID)
     if item:
-        team = {'id': item.id, 'teamNumber':item.teamNumber,'teamName':item.teamName,'teamlocation':item.teamlocation,'teamLogo':item.teamLogo.decode()}
+        team = {'teamNumber': item.teamNumber, 'teamName': item.teamName, 'teamlocation': item.teamlocation,
+                'teamLogo': item.teamLogo.decode()}
         return team
     return '0 team not on server'
 
@@ -343,31 +339,123 @@ def inputEvent():
     editID = int(parameters.get('editID') or -1)
 
     if editID > -1:
+        if db.session.query(Events).filter(Events.id == editID).count() == 0:
+            return '0 event does not exist'
         if name != '':
             db.session.query(Events).filter(Events.id == editID).update({'eventName': name})
         if location != '':
             db.session.query(Events).filter(Events.id == editID).update({'eventLocation': location})
         if date != '':
-            db.session.query(Events).filter(Events.id == editID).update({'eventLocation': date})
+            db.session.query(Events).filter(Events.id == editID).update({'eventDate': date})
         if teams != '':
             db.session.query(Events).filter(Events.id == editID).update({'eventTeams': teams})
         db.session.commit()
         return '1 event updated'
 
-    data = Events(name, location,date, teams)
+    data = Events(name, location, date, teams)
     db.session.add(data)
     db.session.commit()
     return '1 event added'
 
 
-@app.route('/searchEvent', methods=['POST'])
+@app.route('/searchEventID', methods=["POST"])
+def searchEventID():
+    parameters = request.args
+
+    name = parameters.get('eventName') or ''
+    date = parameters.get('eventDate') or ''
+
+    if name == '':
+        return '0 you need a name'
+    event = Events.query.filter(Events.eventName.like(Events.eventName + "%")).order_by(Events.eventDate.desc()).all()
+    if date != '':
+        event = Events.query.filter(Events.eventName.like(Events.eventName + "%"), Events.eventDate == date).all()
+    return str(event[0].id)
+
+
+@app.route('/getEvent', subdomain='scouting', methods=['POST'])
 def returnEvent():
     eventID = request.args.get('id')
     item = Events.query.get(eventID)
     if item:
-        event = {'id': item.id, 'eventName':item.eventName,'eventLocation':item.eventLocation,'eventDate':item.eventDate,'eventTeams':item.eventTeams}
+        event = {'eventName': item.eventName, 'eventLocation': item.eventLocation, 'eventDate': item.eventDate,
+                 'eventTeams': item.eventTeams}
         return event
     return '0 event not on server'
+
+
+@app.route('/deleteEvent', subdomain='scouting', methods=['POST'])
+def deleteEvent():
+    eventID = request.args.get('id')
+    item = Events.query.get(eventID)
+    if item:
+        db.session.delete(item)
+        db.session.commit()
+        return '1 event deleted'
+    return '0 event not on server'
+
+
+@app.route('/inputRobot', methods=["POST"])
+def inputRobot():
+    parameters = request.args
+
+    teamID = int(parameters.get('teamID') or -1)
+    seasonID = int(parameters.get('seasonID') or -1)
+    eventID = int(parameters.get('eventID') or -1)
+
+    driveBase = parameters.get('driveBase') or ''
+    isReliable = bool(parameters.get('isReliable') or False)
+    climbPercent = float(parameters.get('climbPercent') or -1.0)
+
+    editID = int(parameters.get('editID') or -1)
+
+    if db.session.query(Teams).filter(Teams.id == teamID).count() == 0 or db.session.query(Events).filter(
+            Events.id == eventID).count() == 0:
+        return '0 Error, season or team not in database, please create these first'
+    if db.session.query(Robots).filter(Robots.teamID == teamID, Robots.eventID == eventID).count() > 0:
+        return '0 Robot exist already at this event, please edit it instead'
+
+    if editID > -1:
+        if db.session.query(Robots).filter(Robots.id == editID).count() == 0:
+            return '0 event does not exist'
+        if teamID != -1:
+            db.session.query(Robots).filter(Robots.id == editID).update({'teamID': teamID})
+        if seasonID != -1:
+            db.session.query(Robots).filter(Robots.id == editID).update({'seasonID': seasonID})
+        if eventID != -1:
+            db.session.query(Robots).filter(Robots.id == editID).update({'eventID': eventID})
+        if driveBase != '':
+            db.session.query(Robots).filter(Robots.id == editID).update({'driveBase': driveBase})
+        db.session.query(Robots).filter(Robots.id == editID).update({'isReliable': isReliable})
+        if climbPercent != -1:
+            db.session.query(Robots).filter(Robots.id == editID).update({'climbPercent': climbPercent})
+
+        db.session.commit()
+        return '1 robot updated'
+
+    data = Robots(teamID, seasonID, eventID, driveBase, isReliable, climbPercent)
+    db.session.add(data)
+    db.session.commit()
+    return '1 robot added'
+
+
+@app.route('/getRobot')
+def getRobot():
+
+    return ''
+
+@app.route('/searchRobotID', methods=["POST"])
+def searchRobotID():
+    parameters = request.args
+
+    teamID = int(parameters.get('teamID') or -1)
+    eventID = int(parameters.get('eventID') or -1)
+
+    if teamID == -1 or eventID == -1:
+        return '0 you need a team ID and an event ID'
+
+    robot = db.session.query(Robots).filter(Robots.teamID == teamID, Robots.eventID == eventID)
+    return str(robot[0].id)
 
 
 if __name__ == '__main__':
