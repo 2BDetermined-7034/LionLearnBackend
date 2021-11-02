@@ -316,7 +316,7 @@ def deleteTeam():
     return '0 team not on server'
 
 
-@app.route('/getTeam', subdomain='scouting', methods=['POST'])
+@app.route('/getTeam', subdomain='scouting', methods=['GET'])
 def getTeam():
     teamID = request.args.get('id')
     item = Teams.query.get(teamID)
@@ -327,7 +327,7 @@ def getTeam():
     return '0 team not on server'
 
 
-@app.route('/inputEvent', methods=['POST'])
+@app.route('/inputEvent', subdomain='scouting', methods=['POST'])
 def inputEvent():
     parameters = request.args
 
@@ -358,7 +358,7 @@ def inputEvent():
     return '1 event added'
 
 
-@app.route('/searchEventID', methods=["POST"])
+@app.route('/searchEventID', subdomain='scouting', methods=["GET"])
 def searchEventID():
     parameters = request.args
 
@@ -367,13 +367,17 @@ def searchEventID():
 
     if name == '':
         return '0 you need a name'
+
+    if Events.query.filter(Events.eventName.like(Events.eventName + "%")).count() < 1:
+        return '0 no event found'
+
     event = Events.query.filter(Events.eventName.like(Events.eventName + "%")).order_by(Events.eventDate.desc()).all()
     if date != '':
         event = Events.query.filter(Events.eventName.like(Events.eventName + "%"), Events.eventDate == date).all()
     return str(event[0].id)
 
 
-@app.route('/getEvent', subdomain='scouting', methods=['POST'])
+@app.route('/getEvent', subdomain='scouting', methods=['GET'])
 def returnEvent():
     eventID = request.args.get('id')
     item = Events.query.get(eventID)
@@ -395,7 +399,7 @@ def deleteEvent():
     return '0 event not on server'
 
 
-@app.route('/inputRobot', methods=["POST"])
+@app.route('/inputRobot', subdomain='scouting', methods=["POST"])
 def inputRobot():
     parameters = request.args
 
@@ -439,12 +443,19 @@ def inputRobot():
     return '1 robot added'
 
 
-@app.route('/getRobot')
+@app.route('/getRobot', subdomain='scouting', methods=['GET'])
 def getRobot():
+    robotID = request.args.get('id')
+    item = Robots.query.get(robotID)
 
-    return ''
+    if item:
+        robot = {'teamID': item.teamID, 'seasonID': item.seasonID, 'eventID': item.eventID,
+                'driveBase': item.driveBase, 'isReliable': item.isReliable, 'climbPercent': item.climbPercent}
+        return robot
+    return '0 robot not on server'
 
-@app.route('/searchRobotID', methods=["POST"])
+
+@app.route('/searchRobotID', subdomain='scouting', methods=["GET"])
 def searchRobotID():
     parameters = request.args
 
@@ -455,6 +466,8 @@ def searchRobotID():
         return '0 you need a team ID and an event ID'
 
     robot = db.session.query(Robots).filter(Robots.teamID == teamID, Robots.eventID == eventID)
+    if db.session.query(Robots).filter(Robots.teamID == teamID, Robots.eventID == eventID).count() < 1:
+        return '0 no robot found'
     return str(robot[0].id)
 
 
