@@ -86,12 +86,12 @@ class Robots(db.Model):
         self.climbPercent = climb
 
 
-# noinspection DuplicatedCode
 class Games(db.Model):
     __tablename__ = "gameData"
     id = db.Column(db.Integer, primary_key=True)
 
     eventID = db.Column(db.Integer)
+    matchID = db.Column(db.Integer)
 
     blueScore = db.Column(db.Integer)
     B1robotID = db.Column(db.Integer)
@@ -104,77 +104,146 @@ class Games(db.Model):
     R3robotID = db.Column(db.Integer)
 
     if loadGame:
-        ###START_OF_AUTOGAMESCLASS###
-        R1IntLineExt = db.Column(db.Integer)
-        R2IntLineExt = db.Column(db.Integer)
-        R3IntLineExt = db.Column(db.Integer)
-        B1IntLineExt = db.Column(db.Integer)
-        B2IntLineExt = db.Column(db.Integer)
-        B3IntLineExt = db.Column(db.Integer)
+###START_OF_AUTOGAMESCLASS###
+        R1InnerCellsScored = db.Column(db.Integer)
+        R2InnerCellsScored = db.Column(db.Integer)
+        R3InnerCellsScored = db.Column(db.Integer)
+        B1InnerCellsScored = db.Column(db.Integer)
+        B2InnerCellsScored = db.Column(db.Integer)
+        B3InnerCellsScored = db.Column(db.Integer)
 
-        R1Auto = db.Column(db.Integer)
-        R2Auto = db.Column(db.Integer)
-        R3Auto = db.Column(db.Integer)
-        B1Auto = db.Column(db.Integer)
-        B2Auto = db.Column(db.Integer)
-        B3Auto = db.Column(db.Integer)
+        R1UpperCellsScored = db.Column(db.Integer)
+        R2UpperCellsScored = db.Column(db.Integer)
+        R3UpperCellsScored = db.Column(db.Integer)
+        B1UpperCellsScored = db.Column(db.Integer)
+        B2UpperCellsScored = db.Column(db.Integer)
+        B3UpperCellsScored = db.Column(db.Integer)
 
-        R1TeloPowerPoints = db.Column(db.Integer)
-        R2TeloPowerPoints = db.Column(db.Integer)
-        R3TeloPowerPoints = db.Column(db.Integer)
-        B1TeloPowerPoints = db.Column(db.Integer)
-        B2TeloPowerPoints = db.Column(db.Integer)
-        B3TeloPowerPoints = db.Column(db.Integer)
+        R1LowerCellsScored = db.Column(db.Integer)
+        R2LowerCellsScored = db.Column(db.Integer)
+        R3LowerCellsScored = db.Column(db.Integer)
+        B1LowerCellsScored = db.Column(db.Integer)
+        B2LowerCellsScored = db.Column(db.Integer)
+        B3LowerCellsScored = db.Column(db.Integer)
 
-        R1CPP = db.Column(db.Integer)
-        R2CPP = db.Column(db.Integer)
-        R3CPP = db.Column(db.Integer)
-        B1CPP = db.Column(db.Integer)
-        B2CPP = db.Column(db.Integer)
-        B3CPP = db.Column(db.Integer)
+        R1LeftAutoLine = db.Column(db.Boolean)
+        R2LeftAutoLine = db.Column(db.Boolean)
+        R3LeftAutoLine = db.Column(db.Boolean)
+        B1LeftAutoLine = db.Column(db.Boolean)
+        B2LeftAutoLine = db.Column(db.Boolean)
+        B3LeftAutoLine = db.Column(db.Boolean)
 
-        R1EndGame = db.Column(db.Integer)
-        R2EndGame = db.Column(db.Integer)
-        R3EndGame = db.Column(db.Integer)
-        B1EndGame = db.Column(db.Integer)
-        B2EndGame = db.Column(db.Integer)
-        B3EndGame = db.Column(db.Integer)
+        R1Defense = db.Column(db.Boolean)
+        R2Defense = db.Column(db.Boolean)
+        R3Defense = db.Column(db.Boolean)
+        B1Defense = db.Column(db.Boolean)
+        B2Defense = db.Column(db.Boolean)
+        B3Defense = db.Column(db.Boolean)
 
-        R1ShieldSwitch = db.Column(db.Integer)
-        R2ShieldSwitch = db.Column(db.Integer)
-        R3ShieldSwitch = db.Column(db.Integer)
-        B1ShieldSwitch = db.Column(db.Integer)
-        B2ShieldSwitch = db.Column(db.Integer)
-        B3ShieldSwitch = db.Column(db.Integer)
+        R1Trench = db.Column(db.Boolean)
+        R2Trench = db.Column(db.Boolean)
+        R3Trench = db.Column(db.Boolean)
+        B1Trench = db.Column(db.Boolean)
+        B2Trench = db.Column(db.Boolean)
+        B3Trench = db.Column(db.Boolean)
 
-        R1Adjustments = db.Column(db.Integer)
-        R2Adjustments = db.Column(db.Integer)
-        R3Adjustments = db.Column(db.Integer)
-        B1Adjustments = db.Column(db.Integer)
-        B2Adjustments = db.Column(db.Integer)
-        B3Adjustments = db.Column(db.Integer)
+        R1ClimbAttempt = db.Column(db.Boolean)
+        R2ClimbAttempt = db.Column(db.Boolean)
+        R3ClimbAttempt = db.Column(db.Boolean)
+        B1ClimbAttempt = db.Column(db.Boolean)
+        B2ClimbAttempt = db.Column(db.Boolean)
+        B3ClimbAttempt = db.Column(db.Boolean)
 
-        R1Total = db.Column(db.Integer)
-        R2Total = db.Column(db.Integer)
-        R3Total = db.Column(db.Integer)
-        B1Total = db.Column(db.Integer)
-        B2Total = db.Column(db.Integer)
-        B3Total = db.Column(db.Integer)
+        R1Climb = db.Column(db.Boolean)
+        R2Climb = db.Column(db.Boolean)
+        R3Climb = db.Column(db.Boolean)
+        B1Climb = db.Column(db.Boolean)
+        B2Climb = db.Column(db.Boolean)
+        B3Climb = db.Column(db.Boolean)
 
-    ###END_OF_AUTOGAMESCLASS###
+        R1BuddyClimbAttempt = db.Column(db.Boolean)
+        R2BuddyClimbAttempt = db.Column(db.Boolean)
+        R3BuddyClimbAttempt = db.Column(db.Boolean)
+        B1BuddyClimbAttempt = db.Column(db.Boolean)
+        B2BuddyClimbAttempt = db.Column(db.Boolean)
+        B3BuddyClimbAttempt = db.Column(db.Boolean)
+
+        R1BuddyClimb = db.Column(db.Boolean)
+        R2BuddyClimb = db.Column(db.Boolean)
+        R3BuddyClimb = db.Column(db.Boolean)
+        B1BuddyClimb = db.Column(db.Boolean)
+        B2BuddyClimb = db.Column(db.Boolean)
+        B3BuddyClimb = db.Column(db.Boolean)
+
+        R1ParkedEG = db.Column(db.Boolean)
+        R2ParkedEG = db.Column(db.Boolean)
+        R3ParkedEG = db.Column(db.Boolean)
+        B1ParkedEG = db.Column(db.Boolean)
+        B2ParkedEG = db.Column(db.Boolean)
+        B3ParkedEG = db.Column(db.Boolean)
+
+        R1SpunCP = db.Column(db.Boolean)
+        R2SpunCP = db.Column(db.Boolean)
+        R3SpunCP = db.Column(db.Boolean)
+        B1SpunCP = db.Column(db.Boolean)
+        B2SpunCP = db.Column(db.Boolean)
+        B3SpunCP = db.Column(db.Boolean)
+
+        R1SetCPAttempt = db.Column(db.Boolean)
+        R2SetCPAttempt = db.Column(db.Boolean)
+        R3SetCPAttempt = db.Column(db.Boolean)
+        B1SetCPAttempt = db.Column(db.Boolean)
+        B2SetCPAttempt = db.Column(db.Boolean)
+        B3SetCPAttempt = db.Column(db.Boolean)
+
+        R1SetCP = db.Column(db.Boolean)
+        R2SetCP = db.Column(db.Boolean)
+        R3SetCP = db.Column(db.Boolean)
+        B1SetCP = db.Column(db.Boolean)
+        B2SetCP = db.Column(db.Boolean)
+        B3SetCP = db.Column(db.Boolean)
+
+        R1SetCPColorAttempt = db.Column(db.Boolean)
+        R2SetCPColorAttempt = db.Column(db.Boolean)
+        R3SetCPColorAttempt = db.Column(db.Boolean)
+        B1SetCPColorAttempt = db.Column(db.Boolean)
+        B2SetCPColorAttempt = db.Column(db.Boolean)
+        B3SetCPColorAttempt = db.Column(db.Boolean)
+
+        R1SetCPColor = db.Column(db.Boolean)
+        R2SetCPColor = db.Column(db.Boolean)
+        R3SetCPColor = db.Column(db.Boolean)
+        B1SetCPColor = db.Column(db.Boolean)
+        B2SetCPColor = db.Column(db.Boolean)
+        B3SetCPColor = db.Column(db.Boolean)
+
+        R1GroundIntake = db.Column(db.Boolean)
+        R2GroundIntake = db.Column(db.Boolean)
+        R3GroundIntake = db.Column(db.Boolean)
+        B1GroundIntake = db.Column(db.Boolean)
+        B2GroundIntake = db.Column(db.Boolean)
+        B3GroundIntake = db.Column(db.Boolean)
+
+        R1Disabled = db.Column(db.Boolean)
+        R2Disabled = db.Column(db.Boolean)
+        R3Disabled = db.Column(db.Boolean)
+        B1Disabled = db.Column(db.Boolean)
+        B2Disabled = db.Column(db.Boolean)
+        B3Disabled = db.Column(db.Boolean)
+
+        R1Brownout = db.Column(db.Boolean)
+        R2Brownout = db.Column(db.Boolean)
+        R3Brownout = db.Column(db.Boolean)
+        B1Brownout = db.Column(db.Boolean)
+        B2Brownout = db.Column(db.Boolean)
+        B3Brownout = db.Column(db.Boolean)
+###END_OF_AUTOGAMESCLASS###
 
     #   2020 data
-    def __init__(self, Gid, eventID, blueScore, B1robotID, B2robotID, B3robotID, redScore, R1robotID, R2robotID,
-                 R3robotID
-                 ##START_OF_AUTOGAMESINIT###
-                 , R1IntLineExt, R2IntLineExt, R3IntLineExt, B1IntLineExt, B2IntLineExt, B3IntLineExt, R1Auto, R2Auto,
-                 R3Auto, B1Auto, B2Auto, B3Auto, R1TeloPowerPoints, R2TeloPowerPoints, R3TeloPowerPoints,
-                 B1TeloPowerPoints, B2TeloPowerPoints, B3TeloPowerPoints, R1CPP, R2CPP, R3CPP, B1CPP, B2CPP, B3CPP,
-                 R1EndGame, R2EndGame, R3EndGame, B1EndGame, B2EndGame, B3EndGame, R1ShieldSwitch, R2ShieldSwitch,
-                 R3ShieldSwitch, B1ShieldSwitch, B2ShieldSwitch, B3ShieldSwitch, R1Adjustments, R2Adjustments,
-                 R3Adjustments, B1Adjustments, B2Adjustments, B3Adjustments, R1Total, R2Total, R3Total, B1Total,
-                 B2Total, B3Total
-                 ###END_OF_AUTOGAMESINIT###
+    def __init__(self, Gid, eventID, blueScore, B1robotID, B2robotID, B3robotID, redScore, R1robotID, R2robotID, R3robotID
+###START_OF_AUTOGAMESINIT###
+, R1InnerCellsScored, R2InnerCellsScored, R3InnerCellsScored, B1InnerCellsScored, B2InnerCellsScored, B3InnerCellsScored, R1UpperCellsScored, R2UpperCellsScored, R3UpperCellsScored, B1UpperCellsScored, B2UpperCellsScored, B3UpperCellsScored, R1LowerCellsScored, R2LowerCellsScored, R3LowerCellsScored, B1LowerCellsScored, B2LowerCellsScored, B3LowerCellsScored, R1LeftAutoLine, R2LeftAutoLine, R3LeftAutoLine, B1LeftAutoLine, B2LeftAutoLine, B3LeftAutoLine, R1Defense, R2Defense, R3Defense, B1Defense, B2Defense, B3Defense, R1Trench, R2Trench, R3Trench, B1Trench, B2Trench, B3Trench, R1ClimbAttempt, R2ClimbAttempt, R3ClimbAttempt, B1ClimbAttempt, B2ClimbAttempt, B3ClimbAttempt, R1Climb, R2Climb, R3Climb, B1Climb, B2Climb, B3Climb, R1BuddyClimbAttempt, R2BuddyClimbAttempt, R3BuddyClimbAttempt, B1BuddyClimbAttempt, B2BuddyClimbAttempt, B3BuddyClimbAttempt, R1BuddyClimb, R2BuddyClimb, R3BuddyClimb, B1BuddyClimb, B2BuddyClimb, B3BuddyClimb, R1ParkedEG, R2ParkedEG, R3ParkedEG, B1ParkedEG, B2ParkedEG, B3ParkedEG, R1SpunCP, R2SpunCP, R3SpunCP, B1SpunCP, B2SpunCP, B3SpunCP, R1SetCPAttempt, R2SetCPAttempt, R3SetCPAttempt, B1SetCPAttempt, B2SetCPAttempt, B3SetCPAttempt, R1SetCP, R2SetCP, R3SetCP, B1SetCP, B2SetCP, B3SetCP, R1SetCPColorAttempt, R2SetCPColorAttempt, R3SetCPColorAttempt, B1SetCPColorAttempt, B2SetCPColorAttempt, B3SetCPColorAttempt, R1SetCPColor, R2SetCPColor, R3SetCPColor, B1SetCPColor, B2SetCPColor, B3SetCPColor, R1GroundIntake, R2GroundIntake, R3GroundIntake, B1GroundIntake, B2GroundIntake, B3GroundIntake, R1Disabled, R2Disabled, R3Disabled, B1Disabled, B2Disabled, B3Disabled, R1Brownout, R2Brownout, R3Brownout, B1Brownout, B2Brownout, B3Brownout
+###END_OF_AUTOGAMESINIT###
                  ):
         if Gid != 0:
             self.id = Gid
@@ -190,64 +259,139 @@ class Games(db.Model):
         self.R3robotID = R3robotID
 
         if loadGame:
-            ###START_OF_AUTOGAMESPROP###
-            self.R1IntLineExt = R1IntLineExt
-            self.R2IntLineExt = R2IntLineExt
-            self.R3IntLineExt = R3IntLineExt
-            self.B1IntLineExt = B1IntLineExt
-            self.B2IntLineExt = B2IntLineExt
-            self.B3IntLineExt = B3IntLineExt
+###START_OF_AUTOGAMESPROP###
+            self.R1InnerCellsScored = R1InnerCellsScored
+            self.R2InnerCellsScored = R2InnerCellsScored
+            self.R3InnerCellsScored = R3InnerCellsScored
+            self.B1InnerCellsScored = B1InnerCellsScored
+            self.B2InnerCellsScored = B2InnerCellsScored
+            self.B3InnerCellsScored = B3InnerCellsScored
 
-            self.R1Auto = R1Auto
-            self.R2Auto = R2Auto
-            self.R3Auto = R3Auto
-            self.B1Auto = B1Auto
-            self.B2Auto = B2Auto
-            self.B3Auto = B3Auto
+            self.R1UpperCellsScored = R1UpperCellsScored
+            self.R2UpperCellsScored = R2UpperCellsScored
+            self.R3UpperCellsScored = R3UpperCellsScored
+            self.B1UpperCellsScored = B1UpperCellsScored
+            self.B2UpperCellsScored = B2UpperCellsScored
+            self.B3UpperCellsScored = B3UpperCellsScored
 
-            self.R1TeloPowerPoints = R1TeloPowerPoints
-            self.R2TeloPowerPoints = R2TeloPowerPoints
-            self.R3TeloPowerPoints = R3TeloPowerPoints
-            self.B1TeloPowerPoints = B1TeloPowerPoints
-            self.B2TeloPowerPoints = B2TeloPowerPoints
-            self.B3TeloPowerPoints = B3TeloPowerPoints
+            self.R1LowerCellsScored = R1LowerCellsScored
+            self.R2LowerCellsScored = R2LowerCellsScored
+            self.R3LowerCellsScored = R3LowerCellsScored
+            self.B1LowerCellsScored = B1LowerCellsScored
+            self.B2LowerCellsScored = B2LowerCellsScored
+            self.B3LowerCellsScored = B3LowerCellsScored
 
-            self.R1CPP = R1CPP
-            self.R2CPP = R2CPP
-            self.R3CPP = R3CPP
-            self.B1CPP = B1CPP
-            self.B2CPP = B2CPP
-            self.B3CPP = B3CPP
+            self.R1LeftAutoLine = R1LeftAutoLine
+            self.R2LeftAutoLine = R2LeftAutoLine
+            self.R3LeftAutoLine = R3LeftAutoLine
+            self.B1LeftAutoLine = B1LeftAutoLine
+            self.B2LeftAutoLine = B2LeftAutoLine
+            self.B3LeftAutoLine = B3LeftAutoLine
 
-            self.R1EndGame = R1EndGame
-            self.R2EndGame = R2EndGame
-            self.R3EndGame = R3EndGame
-            self.B1EndGame = B1EndGame
-            self.B2EndGame = B2EndGame
-            self.B3EndGame = B3EndGame
+            self.R1Defense = R1Defense
+            self.R2Defense = R2Defense
+            self.R3Defense = R3Defense
+            self.B1Defense = B1Defense
+            self.B2Defense = B2Defense
+            self.B3Defense = B3Defense
 
-            self.R1ShieldSwitch = R1ShieldSwitch
-            self.R2ShieldSwitch = R2ShieldSwitch
-            self.R3ShieldSwitch = R3ShieldSwitch
-            self.B1ShieldSwitch = B1ShieldSwitch
-            self.B2ShieldSwitch = B2ShieldSwitch
-            self.B3ShieldSwitch = B3ShieldSwitch
+            self.R1Trench = R1Trench
+            self.R2Trench = R2Trench
+            self.R3Trench = R3Trench
+            self.B1Trench = B1Trench
+            self.B2Trench = B2Trench
+            self.B3Trench = B3Trench
 
-            self.R1Adjustments = R1Adjustments
-            self.R2Adjustments = R2Adjustments
-            self.R3Adjustments = R3Adjustments
-            self.B1Adjustments = B1Adjustments
-            self.B2Adjustments = B2Adjustments
-            self.B3Adjustments = B3Adjustments
+            self.R1ClimbAttempt = R1ClimbAttempt
+            self.R2ClimbAttempt = R2ClimbAttempt
+            self.R3ClimbAttempt = R3ClimbAttempt
+            self.B1ClimbAttempt = B1ClimbAttempt
+            self.B2ClimbAttempt = B2ClimbAttempt
+            self.B3ClimbAttempt = B3ClimbAttempt
 
-            self.R1Total = R1Total
-            self.R2Total = R2Total
-            self.R3Total = R3Total
-            self.B1Total = B1Total
-            self.B2Total = B2Total
-            self.B3Total = B3Total
+            self.R1Climb = R1Climb
+            self.R2Climb = R2Climb
+            self.R3Climb = R3Climb
+            self.B1Climb = B1Climb
+            self.B2Climb = B2Climb
+            self.B3Climb = B3Climb
 
+            self.R1BuddyClimbAttempt = R1BuddyClimbAttempt
+            self.R2BuddyClimbAttempt = R2BuddyClimbAttempt
+            self.R3BuddyClimbAttempt = R3BuddyClimbAttempt
+            self.B1BuddyClimbAttempt = B1BuddyClimbAttempt
+            self.B2BuddyClimbAttempt = B2BuddyClimbAttempt
+            self.B3BuddyClimbAttempt = B3BuddyClimbAttempt
 
+            self.R1BuddyClimb = R1BuddyClimb
+            self.R2BuddyClimb = R2BuddyClimb
+            self.R3BuddyClimb = R3BuddyClimb
+            self.B1BuddyClimb = B1BuddyClimb
+            self.B2BuddyClimb = B2BuddyClimb
+            self.B3BuddyClimb = B3BuddyClimb
+
+            self.R1ParkedEG = R1ParkedEG
+            self.R2ParkedEG = R2ParkedEG
+            self.R3ParkedEG = R3ParkedEG
+            self.B1ParkedEG = B1ParkedEG
+            self.B2ParkedEG = B2ParkedEG
+            self.B3ParkedEG = B3ParkedEG
+
+            self.R1SpunCP = R1SpunCP
+            self.R2SpunCP = R2SpunCP
+            self.R3SpunCP = R3SpunCP
+            self.B1SpunCP = B1SpunCP
+            self.B2SpunCP = B2SpunCP
+            self.B3SpunCP = B3SpunCP
+
+            self.R1SetCPAttempt = R1SetCPAttempt
+            self.R2SetCPAttempt = R2SetCPAttempt
+            self.R3SetCPAttempt = R3SetCPAttempt
+            self.B1SetCPAttempt = B1SetCPAttempt
+            self.B2SetCPAttempt = B2SetCPAttempt
+            self.B3SetCPAttempt = B3SetCPAttempt
+
+            self.R1SetCP = R1SetCP
+            self.R2SetCP = R2SetCP
+            self.R3SetCP = R3SetCP
+            self.B1SetCP = B1SetCP
+            self.B2SetCP = B2SetCP
+            self.B3SetCP = B3SetCP
+
+            self.R1SetCPColorAttempt = R1SetCPColorAttempt
+            self.R2SetCPColorAttempt = R2SetCPColorAttempt
+            self.R3SetCPColorAttempt = R3SetCPColorAttempt
+            self.B1SetCPColorAttempt = B1SetCPColorAttempt
+            self.B2SetCPColorAttempt = B2SetCPColorAttempt
+            self.B3SetCPColorAttempt = B3SetCPColorAttempt
+
+            self.R1SetCPColor = R1SetCPColor
+            self.R2SetCPColor = R2SetCPColor
+            self.R3SetCPColor = R3SetCPColor
+            self.B1SetCPColor = B1SetCPColor
+            self.B2SetCPColor = B2SetCPColor
+            self.B3SetCPColor = B3SetCPColor
+
+            self.R1GroundIntake = R1GroundIntake
+            self.R2GroundIntake = R2GroundIntake
+            self.R3GroundIntake = R3GroundIntake
+            self.B1GroundIntake = B1GroundIntake
+            self.B2GroundIntake = B2GroundIntake
+            self.B3GroundIntake = B3GroundIntake
+
+            self.R1Disabled = R1Disabled
+            self.R2Disabled = R2Disabled
+            self.R3Disabled = R3Disabled
+            self.B1Disabled = B1Disabled
+            self.B2Disabled = B2Disabled
+            self.B3Disabled = B3Disabled
+
+            self.R1Brownout = R1Brownout
+            self.R2Brownout = R2Brownout
+            self.R3Brownout = R3Brownout
+            self.B1Brownout = B1Brownout
+            self.B2Brownout = B2Brownout
+            self.B3Brownout = B3Brownout
 ###END_OF_AUTOGAMESPROP###
 
 
@@ -450,7 +594,7 @@ def getRobot():
 
     if item:
         robot = {'teamID': item.teamID, 'seasonID': item.seasonID, 'eventID': item.eventID,
-                'driveBase': item.driveBase, 'isReliable': item.isReliable, 'climbPercent': item.climbPercent}
+                 'driveBase': item.driveBase, 'isReliable': item.isReliable, 'climbPercent': item.climbPercent}
         return robot
     return '0 robot not on server'
 
@@ -469,6 +613,190 @@ def searchRobotID():
     if db.session.query(Robots).filter(Robots.teamID == teamID, Robots.eventID == eventID).count() < 1:
         return '0 no robot found'
     return str(robot[0].id)
+
+
+@app.route('/inputGame', methods=["POST"])
+def inputGame():
+
+    parameters = request.args
+
+    eventID = parameters.get('eventID')
+    matchID = parameters.get('matchID')
+
+    blueScore = parameters.get('blueScore')
+    B1robotID = parameters.get('B1robotID')
+    B2robotID = parameters.get('B2robotID')
+    B3robotID = parameters.get('B3robotID')
+
+    redScore = parameters.get('redScore')
+    R1robotID = parameters.get('R1robotID')
+    R2robotID = parameters.get('R2robotID')
+    R3robotID = parameters.get('R3robotID')
+
+    if loadGame:
+###START_OF_AUTOINPUT###
+        R1InnerCellsScored = parameters.get('R1InnerCellsScored') or -1
+        R2InnerCellsScored = parameters.get('R2InnerCellsScored') or -1
+        R3InnerCellsScored = parameters.get('R3InnerCellsScored') or -1
+        B1InnerCellsScored = parameters.get('B1InnerCellsScored') or -1
+        B2InnerCellsScored = parameters.get('B2InnerCellsScored') or -1
+        B3InnerCellsScored = parameters.get('B3InnerCellsScored') or -1
+
+        R1UpperCellsScored = parameters.get('R1UpperCellsScored') or -1
+        R2UpperCellsScored = parameters.get('R2UpperCellsScored') or -1
+        R3UpperCellsScored = parameters.get('R3UpperCellsScored') or -1
+        B1UpperCellsScored = parameters.get('B1UpperCellsScored') or -1
+        B2UpperCellsScored = parameters.get('B2UpperCellsScored') or -1
+        B3UpperCellsScored = parameters.get('B3UpperCellsScored') or -1
+
+        R1LowerCellsScored = parameters.get('R1LowerCellsScored') or -1
+        R2LowerCellsScored = parameters.get('R2LowerCellsScored') or -1
+        R3LowerCellsScored = parameters.get('R3LowerCellsScored') or -1
+        B1LowerCellsScored = parameters.get('B1LowerCellsScored') or -1
+        B2LowerCellsScored = parameters.get('B2LowerCellsScored') or -1
+        B3LowerCellsScored = parameters.get('B3LowerCellsScored') or -1
+
+        R1LeftAutoLine = parameters.get('R1LeftAutoLine') or -1
+        R2LeftAutoLine = parameters.get('R2LeftAutoLine') or -1
+        R3LeftAutoLine = parameters.get('R3LeftAutoLine') or -1
+        B1LeftAutoLine = parameters.get('B1LeftAutoLine') or -1
+        B2LeftAutoLine = parameters.get('B2LeftAutoLine') or -1
+        B3LeftAutoLine = parameters.get('B3LeftAutoLine') or -1
+
+        R1Defense = parameters.get('R1Defense') or -1
+        R2Defense = parameters.get('R2Defense') or -1
+        R3Defense = parameters.get('R3Defense') or -1
+        B1Defense = parameters.get('B1Defense') or -1
+        B2Defense = parameters.get('B2Defense') or -1
+        B3Defense = parameters.get('B3Defense') or -1
+
+        R1Trench = parameters.get('R1Trench') or -1
+        R2Trench = parameters.get('R2Trench') or -1
+        R3Trench = parameters.get('R3Trench') or -1
+        B1Trench = parameters.get('B1Trench') or -1
+        B2Trench = parameters.get('B2Trench') or -1
+        B3Trench = parameters.get('B3Trench') or -1
+
+        R1ClimbAttempt = parameters.get('R1ClimbAttempt') or -1
+        R2ClimbAttempt = parameters.get('R2ClimbAttempt') or -1
+        R3ClimbAttempt = parameters.get('R3ClimbAttempt') or -1
+        B1ClimbAttempt = parameters.get('B1ClimbAttempt') or -1
+        B2ClimbAttempt = parameters.get('B2ClimbAttempt') or -1
+        B3ClimbAttempt = parameters.get('B3ClimbAttempt') or -1
+
+        R1Climb = parameters.get('R1Climb') or -1
+        R2Climb = parameters.get('R2Climb') or -1
+        R3Climb = parameters.get('R3Climb') or -1
+        B1Climb = parameters.get('B1Climb') or -1
+        B2Climb = parameters.get('B2Climb') or -1
+        B3Climb = parameters.get('B3Climb') or -1
+
+        R1BuddyClimbAttempt = parameters.get('R1BuddyClimbAttempt') or -1
+        R2BuddyClimbAttempt = parameters.get('R2BuddyClimbAttempt') or -1
+        R3BuddyClimbAttempt = parameters.get('R3BuddyClimbAttempt') or -1
+        B1BuddyClimbAttempt = parameters.get('B1BuddyClimbAttempt') or -1
+        B2BuddyClimbAttempt = parameters.get('B2BuddyClimbAttempt') or -1
+        B3BuddyClimbAttempt = parameters.get('B3BuddyClimbAttempt') or -1
+
+        R1BuddyClimb = parameters.get('R1BuddyClimb') or -1
+        R2BuddyClimb = parameters.get('R2BuddyClimb') or -1
+        R3BuddyClimb = parameters.get('R3BuddyClimb') or -1
+        B1BuddyClimb = parameters.get('B1BuddyClimb') or -1
+        B2BuddyClimb = parameters.get('B2BuddyClimb') or -1
+        B3BuddyClimb = parameters.get('B3BuddyClimb') or -1
+
+        R1ParkedEG = parameters.get('R1ParkedEG') or -1
+        R2ParkedEG = parameters.get('R2ParkedEG') or -1
+        R3ParkedEG = parameters.get('R3ParkedEG') or -1
+        B1ParkedEG = parameters.get('B1ParkedEG') or -1
+        B2ParkedEG = parameters.get('B2ParkedEG') or -1
+        B3ParkedEG = parameters.get('B3ParkedEG') or -1
+
+        R1SpunCP = parameters.get('R1SpunCP') or -1
+        R2SpunCP = parameters.get('R2SpunCP') or -1
+        R3SpunCP = parameters.get('R3SpunCP') or -1
+        B1SpunCP = parameters.get('B1SpunCP') or -1
+        B2SpunCP = parameters.get('B2SpunCP') or -1
+        B3SpunCP = parameters.get('B3SpunCP') or -1
+
+        R1SetCPAttempt = parameters.get('R1SetCPAttempt') or -1
+        R2SetCPAttempt = parameters.get('R2SetCPAttempt') or -1
+        R3SetCPAttempt = parameters.get('R3SetCPAttempt') or -1
+        B1SetCPAttempt = parameters.get('B1SetCPAttempt') or -1
+        B2SetCPAttempt = parameters.get('B2SetCPAttempt') or -1
+        B3SetCPAttempt = parameters.get('B3SetCPAttempt') or -1
+
+        R1SetCP = parameters.get('R1SetCP') or -1
+        R2SetCP = parameters.get('R2SetCP') or -1
+        R3SetCP = parameters.get('R3SetCP') or -1
+        B1SetCP = parameters.get('B1SetCP') or -1
+        B2SetCP = parameters.get('B2SetCP') or -1
+        B3SetCP = parameters.get('B3SetCP') or -1
+
+        R1SetCPColorAttempt = parameters.get('R1SetCPColorAttempt') or -1
+        R2SetCPColorAttempt = parameters.get('R2SetCPColorAttempt') or -1
+        R3SetCPColorAttempt = parameters.get('R3SetCPColorAttempt') or -1
+        B1SetCPColorAttempt = parameters.get('B1SetCPColorAttempt') or -1
+        B2SetCPColorAttempt = parameters.get('B2SetCPColorAttempt') or -1
+        B3SetCPColorAttempt = parameters.get('B3SetCPColorAttempt') or -1
+
+        R1SetCPColor = parameters.get('R1SetCPColor') or -1
+        R2SetCPColor = parameters.get('R2SetCPColor') or -1
+        R3SetCPColor = parameters.get('R3SetCPColor') or -1
+        B1SetCPColor = parameters.get('B1SetCPColor') or -1
+        B2SetCPColor = parameters.get('B2SetCPColor') or -1
+        B3SetCPColor = parameters.get('B3SetCPColor') or -1
+
+        R1GroundIntake = parameters.get('R1GroundIntake') or -1
+        R2GroundIntake = parameters.get('R2GroundIntake') or -1
+        R3GroundIntake = parameters.get('R3GroundIntake') or -1
+        B1GroundIntake = parameters.get('B1GroundIntake') or -1
+        B2GroundIntake = parameters.get('B2GroundIntake') or -1
+        B3GroundIntake = parameters.get('B3GroundIntake') or -1
+
+        R1Disabled = parameters.get('R1Disabled') or -1
+        R2Disabled = parameters.get('R2Disabled') or -1
+        R3Disabled = parameters.get('R3Disabled') or -1
+        B1Disabled = parameters.get('B1Disabled') or -1
+        B2Disabled = parameters.get('B2Disabled') or -1
+        B3Disabled = parameters.get('B3Disabled') or -1
+
+        R1Brownout = parameters.get('R1Brownout') or -1
+        R2Brownout = parameters.get('R2Brownout') or -1
+        R3Brownout = parameters.get('R3Brownout') or -1
+        B1Brownout = parameters.get('B1Brownout') or -1
+        B2Brownout = parameters.get('B2Brownout') or -1
+        B3Brownout = parameters.get('B3Brownout') or -1
+###END_OF_AUTOINPUT###
+
+        editID = int(parameters.get('editID') or -1)
+
+        if db.session.query(Teams).filter(Teams.id == teamID).count() == 0 or db.session.query(Events).filter(
+                Events.id == eventID).count() == 0:
+            return '0 Error, robot not in database, please create these first'
+
+        if editID > -1:
+            if db.session.query(Robots).filter(Robots.id == editID).count() == 0:
+                return '0 event does not exist'
+            if teamID != -1:
+                db.session.query(Robots).filter(Robots.id == editID).update({'teamID': teamID})
+            if seasonID != -1:
+                db.session.query(Robots).filter(Robots.id == editID).update({'seasonID': seasonID})
+            if eventID != -1:
+                db.session.query(Robots).filter(Robots.id == editID).update({'eventID': eventID})
+            if driveBase != '':
+                db.session.query(Robots).filter(Robots.id == editID).update({'driveBase': driveBase})
+            db.session.query(Robots).filter(Robots.id == editID).update({'isReliable': isReliable})
+            if climbPercent != -1:
+                db.session.query(Robots).filter(Robots.id == editID).update({'climbPercent': climbPercent})
+
+            db.session.commit()
+            return '1 robot updated'
+
+        data = Robots(teamID, seasonID, eventID, driveBase, isReliable, climbPercent)
+        db.session.add(data)
+        db.session.commit()
+        return '1 robot added'
 
 
 if __name__ == '__main__':

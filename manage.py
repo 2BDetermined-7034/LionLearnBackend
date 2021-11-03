@@ -4,7 +4,7 @@ copy and paste the results into the class
 """
 import json
 
-f = open('extra.json')
+f = open('game.json')
 
 extra = json.load(f)
 
@@ -17,16 +17,18 @@ def reset(data):
         if "###START_OF_AUTOGAMESCLASS###" in data[x]:
             writing = False
             newData.append("###START_OF_AUTOGAMESCLASS###")
-        elif "###START_OF_AUTOGAMESINIT###" in data[x]:
+        elif "##START_OF_AUTOGAMESINIT###" in data[x]:
             writing = False
             newData.append("###START_OF_AUTOGAMESINIT###")
         elif "###START_OF_AUTOGAMESPROP###" in data[x]:
             writing = False
             newData.append("###START_OF_AUTOGAMESPROP###")
 
-        elif "###START_OF_AUTOFORMGET###" in data[x]:
+        elif "###START_OF_AUTOINPUT###" in data[x]:
             writing = False
-            newData.append("###START_OF_AUTOFORMGET###")
+            newData.append("###START_OF_AUTOINPUT###")
+
+        #END
 
         elif "###END_OF_AUTOGAMESCLASS###" in data[x]:
             writing = True
@@ -34,11 +36,12 @@ def reset(data):
             writing = True
         elif "###END_OF_AUTOGAMESPROP###" in data[x]:
             writing = True
-        elif "###END_OF_AUTOFORMGET###" in data[x]:
+        elif "###END_OF_AUTOINPUT###" in data[x]:
             writing = True
 
         if writing:
             newData.append(data[x])
+
     return newData
 
 
@@ -47,10 +50,10 @@ def returnDB():
     for x in extra.keys():
         #   Red
         for r in range(1, 4):
-            arr.append("\n      R" + str(r) + x + " = " + "db.Column(db.Integer)")
+            arr.append("\n        R" + str(r) + x + " = " + "db.Column(db." + extra[x]["type"] + ")")
 
         for b in range(1, 4):
-            arr.append("\n      B" + str(b) + x + " = " + "db.Column(db.Integer)")
+            arr.append("\n        B" + str(b) + x + " = " + "db.Column(db." + extra[x]["type"] + ")")
         arr.append("\n")
     return arr
 
@@ -84,40 +87,48 @@ def returnProps():
 
 def returnGET():
     ret = []
-
     for x in extra.keys():
-
         #   Red
         for r in range(1, 4):
-            ret.append("\n          R" + str(r) + x + " = " + "tryGet('R" + str(r) + x + "', -1)")
+            ret.append("\n" + "        R" + str(r) + x + " = parameters.get('R" + str(r) + x + "') or -1")
 
         for b in range(1, 4):
-            ret.append("\n          B" + str(b) + x + " = " + "tryGet('B" + str(b) + x + "', -1)")
-    ret.append("\n")
+            ret.append("\n" + "        B" + str(b) + x + " = parameters.get('B" + str(b) + x + "') or -1")
 
+        ret.append("\n")
     return ret
 
 
 def editAuto(data):
-    print(len(data))
-    for x in range(0, len(data)):
+    classData = returnDB()
+    params = returnInit()
+    propData = returnProps()
+    autoGetData = returnGET()
+    atBottom = False
+
+    x = 0
+    while not atBottom:
         if "###START_OF_AUTOGAMESCLASS###" in data[x]:
-            newData = returnDB()
-            for i in range((len(newData) - 1), -1, -1):
-                data.insert(x + 1, newData[i])
+
+            for i in range((len(classData) - 1), -1, -1):
+                data.insert(x + 1, classData[i])
         if "###START_OF_AUTOGAMESINIT###" in data[x]:
-            params = returnInit()
+
             data.insert(x + 1, params)
         if "###START_OF_AUTOGAMESPROP###" in data[x]:
-            newData = returnProps()
-            for i in range((len(newData) - 1), -1, -1):
-                data.insert(x + 1, newData[i])
-        if "###START_OF_AUTOFORMGET###" in data[x]:
-            autoGetData = returnGET()
-            print(autoGetData)
+
+            for i in range((len(propData) - 1), -1, -1):
+                data.insert(x + 1, propData[i])
+
+        if "###START_OF_AUTOINPUT###" in data[x]:
             for i in range((len(autoGetData) - 1), -1, -1):
                 data.insert(x + 1, autoGetData[i])
 
+        if "app.run()" in data[x]:
+            atBottom = True
+        x += 1
+
+    print(str(len(data)) + " lines edited")
     return data
 
 
@@ -132,7 +143,11 @@ def runEdit():
 
 
 def runDB():
-    print('e')
+    from app import Games
+    from app import db
+
+    Games.__table__.drop(db.engine)
+    db.create_all()
 
 
 def main():
