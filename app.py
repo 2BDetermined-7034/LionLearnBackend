@@ -617,7 +617,7 @@ def searchRobotID():
 
 @app.route('/inputGame', methods=["POST"])
 def inputGame():
-
+    #There is no way to edit a game, if you must, delete the game and re add it
     parameters = request.args
 
     eventID = parameters.get('eventID')
@@ -769,31 +769,17 @@ def inputGame():
         B3Brownout = parameters.get('B3Brownout') or -1
 ###END_OF_AUTOINPUT###
 
-        editID = int(parameters.get('editID') or -1)
+        if db.session.query(Robots).filter(Robots.id == R1robotID).count() == 0:
+            return '0 Error, R1 robot not in database, please create this first'
+        if db.session.query(Robots).filter(Robots.id == R2robotID).count() == 0:
+            return '0 Error, R2 robot not in database, please create this first'
+        if db.session.query(Robots).fiter(Robots.id == R3robotID).count() == 0:
+            return '0 Error, R3 robot not in database, please create this first'
 
-        if db.session.query(Teams).filter(Teams.id == teamID).count() == 0 or db.session.query(Events).filter(
-                Events.id == eventID).count() == 0:
-            return '0 Error, robot not in database, please create these first'
+        if db.session.query(Robots).filter(Robots.id == B1robotID).count() == 0:
+            return '0 Error, B1 robot not in database, please create this first'
 
-        if editID > -1:
-            if db.session.query(Robots).filter(Robots.id == editID).count() == 0:
-                return '0 event does not exist'
-            if teamID != -1:
-                db.session.query(Robots).filter(Robots.id == editID).update({'teamID': teamID})
-            if seasonID != -1:
-                db.session.query(Robots).filter(Robots.id == editID).update({'seasonID': seasonID})
-            if eventID != -1:
-                db.session.query(Robots).filter(Robots.id == editID).update({'eventID': eventID})
-            if driveBase != '':
-                db.session.query(Robots).filter(Robots.id == editID).update({'driveBase': driveBase})
-            db.session.query(Robots).filter(Robots.id == editID).update({'isReliable': isReliable})
-            if climbPercent != -1:
-                db.session.query(Robots).filter(Robots.id == editID).update({'climbPercent': climbPercent})
-
-            db.session.commit()
-            return '1 robot updated'
-
-        data = Robots(teamID, seasonID, eventID, driveBase, isReliable, climbPercent)
+        data = ''
         db.session.add(data)
         db.session.commit()
         return '1 robot added'
