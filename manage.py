@@ -8,6 +8,13 @@ f = open('game.json')
 
 extra = json.load(f)
 
+def getAlt(type):
+    if type == "Boolean":
+        return 'False'
+    elif type == "Integer":
+        return "-1"
+    else:
+        return "-1"
 
 # Function will remove data so we can write to it
 def reset(data):
@@ -27,6 +34,10 @@ def reset(data):
         elif "###START_OF_AUTOINPUT###" in data[x]:
             writing = False
             newData.append("###START_OF_AUTOINPUT###")
+        elif "###START_OF_AUTOPASS###" in data[x]:
+            writing = False
+            newData.append("###START_OF_AUTOPASS###")
+
 
         #END
 
@@ -37,6 +48,8 @@ def reset(data):
         elif "###END_OF_AUTOGAMESPROP###" in data[x]:
             writing = True
         elif "###END_OF_AUTOINPUT###" in data[x]:
+            writing = True
+        elif "###END_OF_AUTOPASS###" in data[x]:
             writing = True
 
         if writing:
@@ -66,7 +79,7 @@ def returnInit():
 
         for b in range(1, 4):
             string += ", B" + str(b) + x
-
+        string += "\n"
     string += "\n"
     return string
 
@@ -90,13 +103,25 @@ def returnGET():
     for x in extra.keys():
         #   Red
         for r in range(1, 4):
-            ret.append("\n" + "    R" + str(r) + x + " = parameters.get('R" + str(r) + x + "') or -1")
+            ret.append("\n" + "    R" + str(r) + x + " = parameters.get('R" + str(r) + x + "') or " + getAlt(extra[x]['type']))
 
         for b in range(1, 4):
-            ret.append("\n" + "    B" + str(b) + x + " = parameters.get('B" + str(b) + x + "') or -1")
+            ret.append("\n" + "    B" + str(b) + x + " = parameters.get('B" + str(b) + x + "') or " + getAlt(extra[x]['type']))
 
         ret.append("\n")
     return ret
+
+
+def returnParams():
+    string = "\n"
+    for x in extra.keys():
+        for r in range(1, 4):
+            string += ", R" + str(r) + x
+        for b in range(1, 4):
+            string += ", B" + str(b) + x
+        string +="\n"
+    string += "\n"
+    return string
 
 
 def editAuto(data):
@@ -104,6 +129,7 @@ def editAuto(data):
     params = returnInit()
     propData = returnProps()
     autoGetData = returnGET()
+    apiParams = returnParams()
     atBottom = False
 
     x = 0
@@ -123,6 +149,11 @@ def editAuto(data):
         if "###START_OF_AUTOINPUT###" in data[x]:
             for i in range((len(autoGetData) - 1), -1, -1):
                 data.insert(x + 1, autoGetData[i])
+
+        if "###START_OF_AUTOPASS###" in data[x]:
+            for i in range((len(apiParams) - 1), -1, -1):
+                data.insert(x + 1, apiParams[i])
+
 
         if "app.run()" in data[x]:
             atBottom = True
