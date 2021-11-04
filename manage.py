@@ -90,10 +90,10 @@ def returnGET():
     for x in extra.keys():
         #   Red
         for r in range(1, 4):
-            ret.append("\n" + "        R" + str(r) + x + " = parameters.get('R" + str(r) + x + "') or -1")
+            ret.append("\n" + "    R" + str(r) + x + " = parameters.get('R" + str(r) + x + "') or -1")
 
         for b in range(1, 4):
-            ret.append("\n" + "        B" + str(b) + x + " = parameters.get('B" + str(b) + x + "') or -1")
+            ret.append("\n" + "    B" + str(b) + x + " = parameters.get('B" + str(b) + x + "') or -1")
 
         ret.append("\n")
     return ret
