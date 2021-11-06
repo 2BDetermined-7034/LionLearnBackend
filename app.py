@@ -867,7 +867,7 @@ def getGame():
     return '0 game not on server'
 
 
-@app.route('/')
+@app.route('/deleteGame', methods=["POST"])
 def deleteGame():
     gameID = request.args.get('id')
     item = Games.query.get(gameID)
@@ -876,6 +876,23 @@ def deleteGame():
         db.session.commit()
         return '1 game deleted'
     return '0 game not on server'
+
+
+@app.route('/searchGameID', methods=['GET'])
+def searchGameID():
+    parameters = request.args
+
+    roundNumber = int(parameters.get('teamID') or -1)
+    eventID = int(parameters.get('eventID') or -1)
+
+    if roundNumber == -1 or eventID == -1:
+        return '0 error you need a round number and an event ID'
+
+    game = db.session.query(Games).filter(Games.matchID == roundNumber, Games.eventID == eventID)
+
+    if game:
+        return str(game[0].id)
+    return '0 game not found'
 
 
 if __name__ == '__main__':
