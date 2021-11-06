@@ -48,6 +48,9 @@ class Teams(db.Model):
         self.teamlocation = location
         self.teamLogo = teamLogo
 
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 
 class Events(db.Model):
     __tablename__ = "eventData"
@@ -62,6 +65,9 @@ class Events(db.Model):
         self.eventLocation = eventLocation
         self.eventDate = eventDate
         self.eventTeams = eventTeams
+
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
 class Robots(db.Model):
@@ -85,6 +91,9 @@ class Robots(db.Model):
         self.isReliable = reliable
         self.climbPercent = climb
 
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 
 class Games(db.Model):
     __tablename__ = "gameData"
@@ -104,7 +113,7 @@ class Games(db.Model):
     R3robotID = db.Column(db.Integer)
 
     if loadGame:
-###START_OF_AUTOGAMESCLASS###
+        ###START_OF_AUTOGAMESCLASS###
         R1InnerCellsScored = db.Column(db.Integer)
         R2InnerCellsScored = db.Column(db.Integer)
         R3InnerCellsScored = db.Column(db.Integer)
@@ -237,32 +246,39 @@ class Games(db.Model):
         B1Brownout = db.Column(db.Boolean)
         B2Brownout = db.Column(db.Boolean)
         B3Brownout = db.Column(db.Boolean)
+
     ###END_OF_AUTOGAMESCLASS###
 
     #   2020 data
-    def __init__(self, eventID, matchID, blueScore, B1robotID, B2robotID, B3robotID, redScore, R1robotID, R2robotID, R3robotID
-###START_OF_AUTOGAMESINIT###
-, R1InnerCellsScored, R2InnerCellsScored, R3InnerCellsScored, B1InnerCellsScored, B2InnerCellsScored, B3InnerCellsScored
-, R1UpperCellsScored, R2UpperCellsScored, R3UpperCellsScored, B1UpperCellsScored, B2UpperCellsScored, B3UpperCellsScored
-, R1LowerCellsScored, R2LowerCellsScored, R3LowerCellsScored, B1LowerCellsScored, B2LowerCellsScored, B3LowerCellsScored
-, R1LeftAutoLine, R2LeftAutoLine, R3LeftAutoLine, B1LeftAutoLine, B2LeftAutoLine, B3LeftAutoLine
-, R1Defense, R2Defense, R3Defense, B1Defense, B2Defense, B3Defense
-, R1Trench, R2Trench, R3Trench, B1Trench, B2Trench, B3Trench
-, R1ClimbAttempt, R2ClimbAttempt, R3ClimbAttempt, B1ClimbAttempt, B2ClimbAttempt, B3ClimbAttempt
-, R1Climb, R2Climb, R3Climb, B1Climb, B2Climb, B3Climb
-, R1BuddyClimbAttempt, R2BuddyClimbAttempt, R3BuddyClimbAttempt, B1BuddyClimbAttempt, B2BuddyClimbAttempt, B3BuddyClimbAttempt
-, R1BuddyClimb, R2BuddyClimb, R3BuddyClimb, B1BuddyClimb, B2BuddyClimb, B3BuddyClimb
-, R1ParkedEG, R2ParkedEG, R3ParkedEG, B1ParkedEG, B2ParkedEG, B3ParkedEG
-, R1SpunCP, R2SpunCP, R3SpunCP, B1SpunCP, B2SpunCP, B3SpunCP
-, R1SetCPAttempt, R2SetCPAttempt, R3SetCPAttempt, B1SetCPAttempt, B2SetCPAttempt, B3SetCPAttempt
-, R1SetCP, R2SetCP, R3SetCP, B1SetCP, B2SetCP, B3SetCP
-, R1SetCPColorAttempt, R2SetCPColorAttempt, R3SetCPColorAttempt, B1SetCPColorAttempt, B2SetCPColorAttempt, B3SetCPColorAttempt
-, R1SetCPColor, R2SetCPColor, R3SetCPColor, B1SetCPColor, B2SetCPColor, B3SetCPColor
-, R1GroundIntake, R2GroundIntake, R3GroundIntake, B1GroundIntake, B2GroundIntake, B3GroundIntake
-, R1Disabled, R2Disabled, R3Disabled, B1Disabled, B2Disabled, B3Disabled
-, R1Brownout, R2Brownout, R3Brownout, B1Brownout, B2Brownout, B3Brownout
+    def __init__(self, eventID, matchID, blueScore, B1robotID, B2robotID, B3robotID, redScore, R1robotID, R2robotID,
+                 R3robotID
+                 ###START_OF_AUTOGAMESINIT###
+                 , R1InnerCellsScored, R2InnerCellsScored, R3InnerCellsScored, B1InnerCellsScored, B2InnerCellsScored,
+                 B3InnerCellsScored
+                 , R1UpperCellsScored, R2UpperCellsScored, R3UpperCellsScored, B1UpperCellsScored, B2UpperCellsScored,
+                 B3UpperCellsScored
+                 , R1LowerCellsScored, R2LowerCellsScored, R3LowerCellsScored, B1LowerCellsScored, B2LowerCellsScored,
+                 B3LowerCellsScored
+                 , R1LeftAutoLine, R2LeftAutoLine, R3LeftAutoLine, B1LeftAutoLine, B2LeftAutoLine, B3LeftAutoLine
+                 , R1Defense, R2Defense, R3Defense, B1Defense, B2Defense, B3Defense
+                 , R1Trench, R2Trench, R3Trench, B1Trench, B2Trench, B3Trench
+                 , R1ClimbAttempt, R2ClimbAttempt, R3ClimbAttempt, B1ClimbAttempt, B2ClimbAttempt, B3ClimbAttempt
+                 , R1Climb, R2Climb, R3Climb, B1Climb, B2Climb, B3Climb
+                 , R1BuddyClimbAttempt, R2BuddyClimbAttempt, R3BuddyClimbAttempt, B1BuddyClimbAttempt,
+                 B2BuddyClimbAttempt, B3BuddyClimbAttempt
+                 , R1BuddyClimb, R2BuddyClimb, R3BuddyClimb, B1BuddyClimb, B2BuddyClimb, B3BuddyClimb
+                 , R1ParkedEG, R2ParkedEG, R3ParkedEG, B1ParkedEG, B2ParkedEG, B3ParkedEG
+                 , R1SpunCP, R2SpunCP, R3SpunCP, B1SpunCP, B2SpunCP, B3SpunCP
+                 , R1SetCPAttempt, R2SetCPAttempt, R3SetCPAttempt, B1SetCPAttempt, B2SetCPAttempt, B3SetCPAttempt
+                 , R1SetCP, R2SetCP, R3SetCP, B1SetCP, B2SetCP, B3SetCP
+                 , R1SetCPColorAttempt, R2SetCPColorAttempt, R3SetCPColorAttempt, B1SetCPColorAttempt,
+                 B2SetCPColorAttempt, B3SetCPColorAttempt
+                 , R1SetCPColor, R2SetCPColor, R3SetCPColor, B1SetCPColor, B2SetCPColor, B3SetCPColor
+                 , R1GroundIntake, R2GroundIntake, R3GroundIntake, B1GroundIntake, B2GroundIntake, B3GroundIntake
+                 , R1Disabled, R2Disabled, R3Disabled, B1Disabled, B2Disabled, B3Disabled
+                 , R1Brownout, R2Brownout, R3Brownout, B1Brownout, B2Brownout, B3Brownout
 
-###END_OF_AUTOGAMESINIT###
+                 ###END_OF_AUTOGAMESINIT###
                  ):
         self.eventID = eventID
         self.matchID = matchID
@@ -277,7 +293,7 @@ class Games(db.Model):
         self.R3robotID = R3robotID
 
         if loadGame:
-###START_OF_AUTOGAMESPROP###
+            ###START_OF_AUTOGAMESPROP###
             self.R1InnerCellsScored = R1InnerCellsScored
             self.R2InnerCellsScored = R2InnerCellsScored
             self.R3InnerCellsScored = R3InnerCellsScored
@@ -410,7 +426,10 @@ class Games(db.Model):
             self.B1Brownout = B1Brownout
             self.B2Brownout = B2Brownout
             self.B3Brownout = B3Brownout
-###END_OF_AUTOGAMESPROP###
+
+    ###END_OF_AUTOGAMESPROP###
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
 # ============================================================================================================================================ #
@@ -483,9 +502,7 @@ def getTeam():
     teamID = request.args.get('id')
     item = Teams.query.get(teamID)
     if item:
-        team = {'teamNumber': item.teamNumber, 'teamName': item.teamName, 'teamlocation': item.teamlocation,
-                'teamLogo': item.teamLogo.decode()}
-        return team
+        return item.as_dict()
     return '0 team not on server'
 
 
@@ -539,14 +556,12 @@ def searchEventID():
     return str(event[0].id)
 
 
-@app.route('/getEvent', subdomain='scouting', methods=['GET'])
+@app.route('/getEvent', methods=['GET'])
 def returnEvent():
     eventID = request.args.get('id')
     item = Events.query.get(eventID)
     if item:
-        event = {'eventName': item.eventName, 'eventLocation': item.eventLocation, 'eventDate': item.eventDate,
-                 'eventTeams': item.eventTeams}
-        return event
+        return item.as_dict()
     return '0 event not on server'
 
 
@@ -609,11 +624,8 @@ def inputRobot():
 def getRobot():
     robotID = request.args.get('id')
     item = Robots.query.get(robotID)
-
     if item:
-        robot = {'teamID': item.teamID, 'seasonID': item.seasonID, 'eventID': item.eventID,
-                 'driveBase': item.driveBase, 'isReliable': item.isReliable, 'climbPercent': item.climbPercent}
-        return robot
+        return item.as_dict()
     return '0 robot not on server'
 
 
@@ -631,6 +643,17 @@ def searchRobotID():
     if db.session.query(Robots).filter(Robots.teamID == teamID, Robots.eventID == eventID).count() < 1:
         return '0 no robot found'
     return str(robot[0].id)
+
+
+@app.route("/deleteRobot", methods=["GET"])
+def deleteRobot():
+    robotID = request.args.get('id')
+    item = Robots.query.get(robotID)
+    if item:
+        db.session.delete(item)
+        db.session.commit()
+        return '1 robot deleted'
+    return '0 robot not on server'
 
 
 @app.route('/inputGame', methods=["POST"])
@@ -651,7 +674,7 @@ def inputGame():
     R2robotID = parameters.get('R2robotID') or -1
     R3robotID = parameters.get('R3robotID') or -1
 
-###START_OF_AUTOINPUT###
+    ###START_OF_AUTOINPUT###
     R1InnerCellsScored = parameters.get('R1InnerCellsScored') or -1
     R2InnerCellsScored = parameters.get('R2InnerCellsScored') or -1
     R3InnerCellsScored = parameters.get('R3InnerCellsScored') or -1
@@ -786,9 +809,6 @@ def inputGame():
     B3Brownout = parameters.get('B3Brownout') or False
     ###END_OF_AUTOINPUT###
 
-
-
-
     if db.session.query(Robots).filter(Robots.id == R1robotID).count() == 0:
         return '0 Error, R1 robot not in database, please create this first'
     if db.session.query(Robots).filter(Robots.id == R2robotID).count() == 0:
@@ -803,33 +823,59 @@ def inputGame():
     if db.session.query(Robots).filter(Robots.id == B3robotID).count() == 0:
         return '0 Error, B3 robot not in database, please create this first'
 
-    data = Games(eventID,matchID, blueScore, B1robotID, B2robotID, B3robotID, redScore, R1robotID, R2robotID, R3robotID
-###START_OF_AUTOPASS###
-, R1InnerCellsScored, R2InnerCellsScored, R3InnerCellsScored, B1InnerCellsScored, B2InnerCellsScored, B3InnerCellsScored
-, R1UpperCellsScored, R2UpperCellsScored, R3UpperCellsScored, B1UpperCellsScored, B2UpperCellsScored, B3UpperCellsScored
-, R1LowerCellsScored, R2LowerCellsScored, R3LowerCellsScored, B1LowerCellsScored, B2LowerCellsScored, B3LowerCellsScored
-, R1LeftAutoLine, R2LeftAutoLine, R3LeftAutoLine, B1LeftAutoLine, B2LeftAutoLine, B3LeftAutoLine
-, R1Defense, R2Defense, R3Defense, B1Defense, B2Defense, B3Defense
-, R1Trench, R2Trench, R3Trench, B1Trench, B2Trench, B3Trench
-, R1ClimbAttempt, R2ClimbAttempt, R3ClimbAttempt, B1ClimbAttempt, B2ClimbAttempt, B3ClimbAttempt
-, R1Climb, R2Climb, R3Climb, B1Climb, B2Climb, B3Climb
-, R1BuddyClimbAttempt, R2BuddyClimbAttempt, R3BuddyClimbAttempt, B1BuddyClimbAttempt, B2BuddyClimbAttempt, B3BuddyClimbAttempt
-, R1BuddyClimb, R2BuddyClimb, R3BuddyClimb, B1BuddyClimb, B2BuddyClimb, B3BuddyClimb
-, R1ParkedEG, R2ParkedEG, R3ParkedEG, B1ParkedEG, B2ParkedEG, B3ParkedEG
-, R1SpunCP, R2SpunCP, R3SpunCP, B1SpunCP, B2SpunCP, B3SpunCP
-, R1SetCPAttempt, R2SetCPAttempt, R3SetCPAttempt, B1SetCPAttempt, B2SetCPAttempt, B3SetCPAttempt
-, R1SetCP, R2SetCP, R3SetCP, B1SetCP, B2SetCP, B3SetCP
-, R1SetCPColorAttempt, R2SetCPColorAttempt, R3SetCPColorAttempt, B1SetCPColorAttempt, B2SetCPColorAttempt, B3SetCPColorAttempt
-, R1SetCPColor, R2SetCPColor, R3SetCPColor, B1SetCPColor, B2SetCPColor, B3SetCPColor
-, R1GroundIntake, R2GroundIntake, R3GroundIntake, B1GroundIntake, B2GroundIntake, B3GroundIntake
-, R1Disabled, R2Disabled, R3Disabled, B1Disabled, B2Disabled, B3Disabled
-, R1Brownout, R2Brownout, R3Brownout, B1Brownout, B2Brownout, B3Brownout
+    data = Games(eventID, matchID, blueScore, B1robotID, B2robotID, B3robotID, redScore, R1robotID, R2robotID, R3robotID
+                 ###START_OF_AUTOPASS###
+                 , R1InnerCellsScored, R2InnerCellsScored, R3InnerCellsScored, B1InnerCellsScored, B2InnerCellsScored,
+                 B3InnerCellsScored
+                 , R1UpperCellsScored, R2UpperCellsScored, R3UpperCellsScored, B1UpperCellsScored, B2UpperCellsScored,
+                 B3UpperCellsScored
+                 , R1LowerCellsScored, R2LowerCellsScored, R3LowerCellsScored, B1LowerCellsScored, B2LowerCellsScored,
+                 B3LowerCellsScored
+                 , R1LeftAutoLine, R2LeftAutoLine, R3LeftAutoLine, B1LeftAutoLine, B2LeftAutoLine, B3LeftAutoLine
+                 , R1Defense, R2Defense, R3Defense, B1Defense, B2Defense, B3Defense
+                 , R1Trench, R2Trench, R3Trench, B1Trench, B2Trench, B3Trench
+                 , R1ClimbAttempt, R2ClimbAttempt, R3ClimbAttempt, B1ClimbAttempt, B2ClimbAttempt, B3ClimbAttempt
+                 , R1Climb, R2Climb, R3Climb, B1Climb, B2Climb, B3Climb
+                 , R1BuddyClimbAttempt, R2BuddyClimbAttempt, R3BuddyClimbAttempt, B1BuddyClimbAttempt,
+                 B2BuddyClimbAttempt, B3BuddyClimbAttempt
+                 , R1BuddyClimb, R2BuddyClimb, R3BuddyClimb, B1BuddyClimb, B2BuddyClimb, B3BuddyClimb
+                 , R1ParkedEG, R2ParkedEG, R3ParkedEG, B1ParkedEG, B2ParkedEG, B3ParkedEG
+                 , R1SpunCP, R2SpunCP, R3SpunCP, B1SpunCP, B2SpunCP, B3SpunCP
+                 , R1SetCPAttempt, R2SetCPAttempt, R3SetCPAttempt, B1SetCPAttempt, B2SetCPAttempt, B3SetCPAttempt
+                 , R1SetCP, R2SetCP, R3SetCP, B1SetCP, B2SetCP, B3SetCP
+                 , R1SetCPColorAttempt, R2SetCPColorAttempt, R3SetCPColorAttempt, B1SetCPColorAttempt,
+                 B2SetCPColorAttempt, B3SetCPColorAttempt
+                 , R1SetCPColor, R2SetCPColor, R3SetCPColor, B1SetCPColor, B2SetCPColor, B3SetCPColor
+                 , R1GroundIntake, R2GroundIntake, R3GroundIntake, B1GroundIntake, B2GroundIntake, B3GroundIntake
+                 , R1Disabled, R2Disabled, R3Disabled, B1Disabled, B2Disabled, B3Disabled
+                 , R1Brownout, R2Brownout, R3Brownout, B1Brownout, B2Brownout, B3Brownout
 
-###END_OF_AUTOPASS###
+                 ###END_OF_AUTOPASS###
                  )
     db.session.add(data)
     db.session.commit()
     return '1 game added'
+
+
+@app.route('/getGame', methods=['GET'])
+def getGame():
+    gameID = request.args.get('id')
+    item = Games.query.get(gameID)
+
+    if item:
+        return item.as_dict()
+    return '0 game not on server'
+
+
+@app.route('/')
+def deleteGame():
+    gameID = request.args.get('id')
+    item = Games.query.get(gameID)
+    if item:
+        db.session.delete(item)
+        db.session.commit()
+        return '1 game deleted'
+    return '0 game not on server'
 
 
 if __name__ == '__main__':
